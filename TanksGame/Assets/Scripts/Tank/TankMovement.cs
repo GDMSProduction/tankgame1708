@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class TankMovement : MonoBehaviour
 {
-    [SerializeField]
-    UpKey
-
     public int m_PlayerNumber = 1;         
     public float m_Speed = 12f;            
     public float m_TurnSpeed = 180f;       
@@ -71,7 +69,9 @@ public class TankMovement : MonoBehaviour
 
     private void Move()
     {
+        float xUpdate = CrossPlatformInputManager.GetAxis("Horizontal") * Time.deltaTime;
         // Adjust the position of the tank based on the player's input.
+        transform.Translate(0, 0, 0);
     }
 
 
