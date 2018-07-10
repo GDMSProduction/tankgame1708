@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
 
 public class TankMovement : MonoBehaviour
 {
@@ -69,9 +68,7 @@ public class TankMovement : MonoBehaviour
 
     private void Move()
     {
-        float xUpdate = CrossPlatformInputManager.GetAxis("Horizontal") * Time.deltaTime;
         // Adjust the position of the tank based on the player's input.
-        transform.Translate(0, 0, 0);
     }
 
 
