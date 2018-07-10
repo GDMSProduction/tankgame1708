@@ -22,6 +22,7 @@ public class TankMovement : MonoBehaviour
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+        m_MovementAudio = GetComponent<AudioSource>();
     }
 
 
@@ -49,9 +50,8 @@ public class TankMovement : MonoBehaviour
 
     private void Update()
     {
-        m_MovementAxisName = "Vertical" + m_PlayerNumber;
-        m_TurnAxisName = "Horizontal" + m_PlayerNumber;
-        m_OriginalPitch = m_MovementAudio.pitch;
+        m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
+        m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
     }
 
     private void EngineAudio()
