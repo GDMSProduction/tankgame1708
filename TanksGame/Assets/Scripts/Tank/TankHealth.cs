@@ -13,6 +13,7 @@ public class TankHealth : MonoBehaviour
 
     private AudioSource m_ExplosionAudio;
     private ParticleSystem m_ExplosionParticles;
+    [SerializeField]
     private float m_CurrentHealth;
     private bool m_Dead;
 
@@ -36,8 +37,16 @@ public class TankHealth : MonoBehaviour
         m_Dead = false;
         // Update the health slider's value and color.
         SetHealthUI();
+        //testdamage();
     }
 
+    //public void testdamage()
+    //{
+    //    while (true)
+    //    {
+    //        TakeDamage(10);
+    //    }
+    //}
 
     public void TakeDamage(float amount)
     {
@@ -50,7 +59,7 @@ public class TankHealth : MonoBehaviour
         SetHealthUI();
 
         // If the current health is at or below zero and it has not yet been registered, call OnDeath.
-        if (m_CurrentHealth <=0f &&!m_Dead)
+        if (m_CurrentHealth <=0f && !m_Dead)
         {
             OnDeath();
         }
