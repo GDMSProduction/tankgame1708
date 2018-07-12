@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
             // ... create them, set their player number and references needed for control.
             m_Tanks[i].m_Instance =
                 Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
+            m_Tanks[i].m_Shooting = m_TankPrefab.GetComponent<TankShooting>();
             m_Tanks[i].m_PlayerNumber = i + 1;
             m_Tanks[i].Setup();
         }
@@ -81,7 +82,9 @@ public class GameManager : MonoBehaviour
         if (m_GameWinner != null)
         {
             // If there is a game winner, restart the level.
+#pragma warning disable CS0618 // Type or member is obsolete
             Application.LoadLevel(Application.loadedLevel);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
         else
         {
