@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class TankMovement : MonoBehaviour
 {
@@ -49,8 +50,10 @@ public class TankMovement : MonoBehaviour
 
     private void Update()
     {
-        m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
-        m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
+        m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
+        m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);
+        //m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
+        //m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
 
         EngineAudio();
     }
