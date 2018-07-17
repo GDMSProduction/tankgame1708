@@ -62,7 +62,9 @@ public class ShellExplosion : MonoBehaviour
         m_ExplosionAudio.Play();
 
         // Once the particles have finished, destroy the gameobject they are on.
+#pragma warning disable CS0618 // Type or member is obsolete
         Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.duration);
+#pragma warning restore CS0618 // Type or member is obsolete
 
         // Destroy the shell.
         Destroy(gameObject);
