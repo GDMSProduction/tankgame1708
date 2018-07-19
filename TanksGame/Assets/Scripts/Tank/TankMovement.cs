@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
+
 public class TankMovement : MonoBehaviour
 {
     public int m_PlayerNumber = 1;         
@@ -50,12 +51,22 @@ public class TankMovement : MonoBehaviour
 
     private void Update()
     {
-        m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
-        m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);
-        //m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
-        //m_TurnInputValue = Input.GetAxis(m_TurnAxisName);
+        if (!GameManager.IsSinglePlayer)
+        {
+            m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
+            m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);
+            EngineAudio();
+        }
 
-        EngineAudio();
+        if (GameManager.IsSinglePlayer)
+        {
+            if (m_PlayerNumber == 1)
+            {
+                m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
+                m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);
+                EngineAudio();
+            }
+        }
     }
 
     private void EngineAudio()
