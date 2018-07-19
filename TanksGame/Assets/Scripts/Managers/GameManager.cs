@@ -195,15 +195,26 @@ public class GameManager : MonoBehaviour
         int numTanksLeft = 0;
 
         // Go through all the tanks...
-        for (int i = 0; i < m_Tanks.Length; i++)
+        if (IsSinglePlayer)
         {
-            // ... and if they are active, increment the counter.
-            if (m_Tanks[i].m_Instance.activeSelf)
-                numTanksLeft++;
+            if (!m_Tanks[0].m_Instance.activeSelf)
+            {
+                return true;
+            }
+            else return false;
         }
 
-        // If there are one or fewer tanks remaining return true, otherwise return false.
-        return numTanksLeft <= 1;
+        else
+        {
+            for (int i = 0; i < m_Tanks.Length; i++)
+            {
+                // ... and if they are active, increment the counter.
+                if (m_Tanks[i].m_Instance.activeSelf)
+                    numTanksLeft++;
+            }
+            // If there are one or fewer tanks remaining return true, otherwise return false.
+            return numTanksLeft <= 1;
+        }
     }
 
 
@@ -211,12 +222,23 @@ public class GameManager : MonoBehaviour
     // This function is called with the assumption that 1 or fewer tanks are currently active.
     private TankManager GetRoundWinner()
     {
-        // Go through all the tanks...
-        for (int i = 0; i < m_Tanks.Length; i++)
+        if (GameManager.IsSinglePlayer)
         {
-            // ... and if one of them is active, it is the winner so return it.
-            if (m_Tanks[i].m_Instance.activeSelf)
-                return m_Tanks[i];
+            if (!m_Tanks[0].m_Instance.activeSelf)
+            {
+                return m_Tanks[1];
+            }
+        }
+
+        else
+        {
+            // Go through all the tanks...
+            for (int i = 0; i < m_Tanks.Length; i++)
+            {
+                // ... and if one of them is active, it is the winner so return it.
+                if (m_Tanks[i].m_Instance.activeSelf)
+                    return m_Tanks[i];
+            }
         }
 
         // If none of the tanks are active it is a draw so return null.
