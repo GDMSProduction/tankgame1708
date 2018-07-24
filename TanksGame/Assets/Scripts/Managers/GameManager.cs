@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class GameManager : MonoBehaviour
     public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
     public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
     public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
+
+
     public static bool IsSinglePlayer;          //Is the game in SinglePlayer
 
 
@@ -21,8 +24,13 @@ public class GameManager : MonoBehaviour
     private TankManager m_RoundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
     private TankManager m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
 
+
     private void Start()
     {
+        m_RoundWinner = null;
+        m_GameWinner = null;
+        if (SceneManager.GetActiveScene().buildIndex ==  2) {   IsSinglePlayer = true;    }
+        else {   IsSinglePlayer = false;   }
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
@@ -32,51 +40,22 @@ public class GameManager : MonoBehaviour
 
         // Once the tanks have been created and the camera is using them as targets, start the game.
         StartCoroutine(GameLoop());
-        if (SceneManager.GetActiveScene().buildIndex ==  2)
-        {   IsSinglePlayer = true;    }
-        else
-        {   IsSinglePlayer = false;   }
     }
 
 
     private void SpawnAllTanks()
     {
-        if (IsSinglePlayer == false)
+        // For all the tanks...
+        for (int i = 0; i < m_Tanks.Length; i++)
         {
-            // For all the tanks...
-            for (int i = 0; i < m_Tanks.Length; i++)
-            {
-                // ... create them, set their player number and references needed for control.
-                m_Tanks[i].m_Instance =
-                    Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
-                m_Tanks[i].m_Shooting = m_TankPrefab.GetComponent<TankShooting>();
-                m_Tanks[i].m_PlayerNumber = i + 1;
-                m_Tanks[i].Setup();
-            }
+            // ... create them, set their player number and references needed for control.
+            m_Tanks[i].m_Instance =
+                Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
+            m_Tanks[i].m_Shooting = m_TankPrefab.GetComponent<TankShooting>();
+            m_Tanks[i].m_PlayerNumber = i + 1;
+            m_Tanks[i].Setup();
         }
-        if (IsSinglePlayer == true)
-        {
-            // For all the tanks...
-            for (int i = 0; i < m_Tanks.Length; i++)
-            {
-                if (i == 0)
-                {
-                    // ... create them, set their player number and references needed for control.
-                    m_Tanks[i].m_Instance =
-                        Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
-                    m_Tanks[i].m_Shooting = m_TankPrefab.GetComponent<TankShooting>();
-                    m_Tanks[i].m_PlayerNumber = i + 1;
-                    m_Tanks[i].Setup();
-                }
-                else
-                {
-                    // ... create them, set their player number and references needed for control.
-                    m_Tanks[i].m_Instance =
-                        Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
-                    m_Tanks[i].m_PlayerNumber = i + 1;
-                }
-            }
-        }
+        
     }
 
 
@@ -197,10 +176,15 @@ public class GameManager : MonoBehaviour
         // Go through all the tanks...
         if (IsSinglePlayer)
         {
-            if (!m_Tanks[0].m_Instance.activeSelf)
+            for (int i = 0; i < m_Tanks.Length; i++)
             {
-                return true;
+                if (m_Tanks[i].m_Instance.activeSelf)
+                    {   numTanksLeft++; }
             }
+
+            if (!m_Tanks[0].m_Instance.activeSelf || numTanksLeft <= 1)
+            {   return true;    }
+
             else return false;
         }
 
@@ -230,15 +214,12 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        else
+        // Go through all the tanks...
+        for (int i = 0; i < m_Tanks.Length; i++)
         {
-            // Go through all the tanks...
-            for (int i = 0; i < m_Tanks.Length; i++)
-            {
-                // ... and if one of them is active, it is the winner so return it.
-                if (m_Tanks[i].m_Instance.activeSelf)
-                    return m_Tanks[i];
-            }
+            // ... and if one of them is active, it is the winner so return it.
+            if (m_Tanks[i].m_Instance.activeSelf)
+                return m_Tanks[i];
         }
 
         // If none of the tanks are active it is a draw so return null.

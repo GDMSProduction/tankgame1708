@@ -45,28 +45,20 @@ public class TankMovement : MonoBehaviour
     {
         m_MovementAxisName = "Vertical" + m_PlayerNumber;
         m_TurnAxisName = "Horizontal" + m_PlayerNumber;
-
         m_OriginalPitch = m_MovementAudio.pitch;
+
+        if (GameManager.IsSinglePlayer && m_PlayerNumber != 1)
+        {
+            m_MovementAxisName = "Enemy";
+            m_TurnAxisName = "Enemy";
+        }
     }
 
     private void Update()
     {
-        if (!GameManager.IsSinglePlayer)
-        {
-            m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
-            m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);
-            EngineAudio();
-        }
-
-        if (GameManager.IsSinglePlayer)
-        {
-            if (m_PlayerNumber == 1)
-            {
-                m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
-                m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);
-                EngineAudio();
-            }
-        }
+        m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
+        m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);
+        EngineAudio();
     }
 
     private void EngineAudio()
