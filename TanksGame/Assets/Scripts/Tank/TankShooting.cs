@@ -45,27 +45,23 @@ public class TankShooting : MonoBehaviour
 
     private void Update()
     {
-       
-
-        if (GameManager.IsSinglePlayer && m_PlayerNumber == 1)
+        // The slider should have a default value of the minimum launch force.
+        m_AimSlider.value = m_MinLaunchForce;
+            
+        // If the max force has been exceeded and the shell hasn't yet been launched...
+        if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
         {
-            
-            // The slider should have a default value of the minimum launch force.
-            m_AimSlider.value = m_MinLaunchForce;
-            
-            // If the max force has been exceeded and the shell hasn't yet been launched...
-            if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
-            {
-                // ... use the max force and launch the shell.
-                m_CurrentLaunchForce = m_MaxLaunchForce;
-                Fire();
-            }
+            // ... use the max force and launch the shell.
+            m_CurrentLaunchForce = m_MaxLaunchForce;
+            Fire();
+        }
 
-            // Otherwise, if the fire button has just started being pressed...
-            //else if (Input.GetButtonDown(m_FireButton))
-            else if (CrossPlatformInputManager.GetButtonDown(m_FireButton))
+        // Otherwise, if the fire button has just started being pressed...
+        //else if (Input.GetButtonDown(m_FireButton))
+        else if (CrossPlatformInputManager.GetButtonDown(m_FireButton))
+        {
+            if (Time.realtimeSinceStartup >= start + m_FireDelay)
             {
-                
                 // ... reset the fired flag and reset the launch force.
                 m_Fired = false;
                 m_CurrentLaunchForce = m_MinLaunchForce;
@@ -73,84 +69,34 @@ public class TankShooting : MonoBehaviour
                 // Change the clip to the charging clip and start it playing.
                 m_ShootingAudio.clip = m_ChargingClip;
                 m_ShootingAudio.Play();
+                Debug.Log("fire");
             }
-        
-            // Otherwise, if the fire button is being held and the shell hasn't been launched yet...
-            //else if (Input.GetButton(m_FireButton) && !m_Fired)
-            else if (CrossPlatformInputManager.GetButton(m_FireButton) && !m_Fired)
+            else
             {
-                // Increment the launch force and update the slider.
-                m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
-
-                m_AimSlider.value = m_CurrentLaunchForce;
-            }
-
-            // Otherwise, if the fire button is released and the shell hasn't been launched yet...
-            //else if (Input.GetButtonUp(m_FireButton) && !m_Fired)
-            else if (CrossPlatformInputManager.GetButtonUp(m_FireButton) && !m_Fired)
-            {
-                // ... launch the shell.
-                Fire();
-               
+                Debug.Log("delay happened");
             }
         }
 
-        if (!GameManager.IsSinglePlayer)
+        // Otherwise, if the fire button is being held and the shell hasn't been launched yet...
+        //else if (Input.GetButton(m_FireButton) && !m_Fired)
+        else if (CrossPlatformInputManager.GetButton(m_FireButton) && !m_Fired)
         {
-           
-            // The slider should have a default value of the minimum launch force.
-            m_AimSlider.value = m_MinLaunchForce;
-            
-            // If the max force has been exceeded and the shell hasn't yet been launched...
-            if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
-            {
-                // ... use the max force and launch the shell.
-                m_CurrentLaunchForce = m_MaxLaunchForce;
-                Fire();
-            }
+            // Increment the launch force and update the slider.
+            m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
 
-            // Otherwise, if the fire button has just started being pressed...
-            //else if (Input.GetButtonDown(m_FireButton))
-            else if (CrossPlatformInputManager.GetButtonDown(m_FireButton))
-            {
-                if (Time.realtimeSinceStartup >= start + m_FireDelay)
-                {
-                    // ... reset the fired flag and reset the launch force.
-                    m_Fired = false;
-                    m_CurrentLaunchForce = m_MinLaunchForce;
+            m_AimSlider.value = m_CurrentLaunchForce;
+        }
 
-                    // Change the clip to the charging clip and start it playing.
-                    m_ShootingAudio.clip = m_ChargingClip;
-                    m_ShootingAudio.Play();
-                    Debug.Log("fire");
-                }
-                else
-                {
-                    Debug.Log("delay happened");
-                }
-            }
-
-            // Otherwise, if the fire button is being held and the shell hasn't been launched yet...
-            //else if (Input.GetButton(m_FireButton) && !m_Fired)
-            else if (CrossPlatformInputManager.GetButton(m_FireButton) && !m_Fired)
-            {
-                // Increment the launch force and update the slider.
-                m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
-
-                m_AimSlider.value = m_CurrentLaunchForce;
-            }
-
-            // Otherwise, if the fire button is released and the shell hasn't been launched yet...
-            //else if (Input.GetButtonUp(m_FireButton) && !m_Fired)
-            else if (CrossPlatformInputManager.GetButtonUp(m_FireButton) && !m_Fired)
-            {
+        // Otherwise, if the fire button is released and the shell hasn't been launched yet...
+        //else if (Input.GetButtonUp(m_FireButton) && !m_Fired)
+        else if (CrossPlatformInputManager.GetButtonUp(m_FireButton) && !m_Fired)
+        {
               
-                    start = Time.realtimeSinceStartup;
-                    // ... launch the shell.
-                    Fire();
+                start = Time.realtimeSinceStartup;
+                // ... launch the shell.
+                Fire();
                 
                
-            }
         }
     }
 
