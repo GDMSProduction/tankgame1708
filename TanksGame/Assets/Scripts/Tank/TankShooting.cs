@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
+using System.Collections;
 public class TankShooting : MonoBehaviour
 {
     public int m_PlayerNumber = 1;       
@@ -13,23 +14,27 @@ public class TankShooting : MonoBehaviour
     public float m_MinLaunchForce = 15f; 
     public float m_MaxLaunchForce = 30f; 
     public float m_MaxChargeTime = 0.75f;
-    
+    public float m_FireDelay = 0.5f;//delay value
+
     private string m_FireButton;         
     private float m_CurrentLaunchForce;  
     private float m_ChargeSpeed;         
     private bool m_Fired;
-
+    private WaitForSeconds m_Delay;//delay
+    private float start;
 
     private void OnEnable()
     {
         // When the tank is turned on, reset the launch force and the UI
         m_CurrentLaunchForce = m_MinLaunchForce;
         m_AimSlider.value = m_MinLaunchForce;
+        m_Delay = new WaitForSeconds(m_FireDelay);
     }
 
 
     private void Start()
     {
+        
         // The fire axis is based on the player number.
         m_FireButton = "Fire" + m_PlayerNumber;
 
@@ -40,11 +45,14 @@ public class TankShooting : MonoBehaviour
 
     private void Update()
     {
+       
+
         if (GameManager.IsSinglePlayer && m_PlayerNumber == 1)
         {
+            
             // The slider should have a default value of the minimum launch force.
             m_AimSlider.value = m_MinLaunchForce;
-
+            
             // If the max force has been exceeded and the shell hasn't yet been launched...
             if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
             {
@@ -57,6 +65,7 @@ public class TankShooting : MonoBehaviour
             //else if (Input.GetButtonDown(m_FireButton))
             else if (CrossPlatformInputManager.GetButtonDown(m_FireButton))
             {
+                
                 // ... reset the fired flag and reset the launch force.
                 m_Fired = false;
                 m_CurrentLaunchForce = m_MinLaunchForce;
@@ -82,14 +91,16 @@ public class TankShooting : MonoBehaviour
             {
                 // ... launch the shell.
                 Fire();
+               
             }
         }
 
         if (!GameManager.IsSinglePlayer)
         {
+           
             // The slider should have a default value of the minimum launch force.
             m_AimSlider.value = m_MinLaunchForce;
-
+            
             // If the max force has been exceeded and the shell hasn't yet been launched...
             if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
             {
@@ -102,13 +113,21 @@ public class TankShooting : MonoBehaviour
             //else if (Input.GetButtonDown(m_FireButton))
             else if (CrossPlatformInputManager.GetButtonDown(m_FireButton))
             {
-                // ... reset the fired flag and reset the launch force.
-                m_Fired = false;
-                m_CurrentLaunchForce = m_MinLaunchForce;
+                if (Time.realtimeSinceStartup >= start + m_FireDelay)
+                {
+                    // ... reset the fired flag and reset the launch force.
+                    m_Fired = false;
+                    m_CurrentLaunchForce = m_MinLaunchForce;
 
-                // Change the clip to the charging clip and start it playing.
-                m_ShootingAudio.clip = m_ChargingClip;
-                m_ShootingAudio.Play();
+                    // Change the clip to the charging clip and start it playing.
+                    m_ShootingAudio.clip = m_ChargingClip;
+                    m_ShootingAudio.Play();
+                    Debug.Log("fire");
+                }
+                else
+                {
+                    Debug.Log("delay happened");
+                }
             }
 
             // Otherwise, if the fire button is being held and the shell hasn't been launched yet...
@@ -125,15 +144,27 @@ public class TankShooting : MonoBehaviour
             //else if (Input.GetButtonUp(m_FireButton) && !m_Fired)
             else if (CrossPlatformInputManager.GetButtonUp(m_FireButton) && !m_Fired)
             {
-                // ... launch the shell.
-                Fire();
+              
+                    start = Time.realtimeSinceStartup;
+                    // ... launch the shell.
+                    Fire();
+                
+               
             }
         }
     }
 
+    //private IEnumerator delayer()
+    //{
+    //    Debug.Log("delay start");
+    //    yield return m_Delay;
+    //    Fire();
+    //    Debug.Log("delay ended");
 
+    //}
     private void Fire()
     {
+
         // Set the fired flag so only Fire is only called once.
         m_Fired = true;
 
@@ -150,5 +181,6 @@ public class TankShooting : MonoBehaviour
 
         // Reset the launch force.  This is a precaution in case of missing button events.
         m_CurrentLaunchForce = m_MinLaunchForce;
+      
     }
 }
