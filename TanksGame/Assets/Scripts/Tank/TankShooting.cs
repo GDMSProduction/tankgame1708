@@ -40,6 +40,8 @@ public class TankShooting : MonoBehaviour
 
         // The rate that the launch force charges up is the range of possible forces by the max charge time.
         m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+
+        if (GameManager.IsSinglePlayer && m_PlayerNumber != 1) {  m_FireButton = "Enemy"; }
     }
 
 
