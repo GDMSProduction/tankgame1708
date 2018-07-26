@@ -39,14 +39,7 @@ public class TankHealth : MonoBehaviour
         SetHealthUI();
         //testdamage();
     }
-
-    //public void testdamage()
-    //{
-    //    while (true)
-    //    {
-    //        TakeDamage(10);
-    //    }
-    //}
+    
 
     public void TakeDamage(float amount)
     {

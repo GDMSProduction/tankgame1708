@@ -21,13 +21,14 @@ public class TankMovement : MonoBehaviour
     private float m_TurnInputValue;        
     private float m_OriginalPitch;
     private float m_Turretinputvalue;
-    private Rigidbody m_turret;
+   private GameObject m_turret;
 
 
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-        m_turret = m_Rigidbody.transform.Find("TankTurret").GetComponent<Rigidbody>();
+        //m_turret = this.gameObject.transform.GetChild(0).GetChild(3).gameObject;
+        m_turret = m_Rigidbody.transform.Find("TankRenderers").Find("TankTurret").gameObject;
     }
 
 
@@ -97,7 +98,7 @@ public class TankMovement : MonoBehaviour
         // Move and turn the tank.
         Move();
         Turn();
-        TurnTurret();
+       TurnTurret();
     }
 
 
@@ -115,10 +116,12 @@ public class TankMovement : MonoBehaviour
         m_Rigidbody.MoveRotation(m_Rigidbody.rotation * turnRotation);
     }
 
-    private void TurnTurret()
+   private void TurnTurret()
     {
-        float turn = m_Turretinputvalue * m_TurnSpeed * Time.deltaTime;
-        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
-        m_turret.MoveRotation(m_Rigidbody.rotation * turnRotation);
+       float turret = m_Turretinputvalue * m_TurnSpeed * Time.deltaTime;
+       Quaternion turnRotation = Quaternion.Euler(0f, turret, 0f);
+       //m_turret.MoveRotation(m_turret.rotation * turnRotation);
+       m_turret.transform.rotation = m_turret.transform.rotation * turnRotation;
+       //m_turret.transform.SetPositionAndRotation(m_Rigidbody.position, m_turret.transform.rotation * turnRotation);
     }
 };
