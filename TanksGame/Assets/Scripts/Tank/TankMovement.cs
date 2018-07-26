@@ -14,16 +14,20 @@ public class TankMovement : MonoBehaviour
 
     
     private string m_MovementAxisName;     
-    private string m_TurnAxisName;         
+    private string m_TurnAxisName;
+    private string m_TurretAxis;
     private Rigidbody m_Rigidbody;         
     private float m_MovementInputValue;    
     private float m_TurnInputValue;        
-    private float m_OriginalPitch;         
+    private float m_OriginalPitch;
+    private float m_Turretinputvalue;
+    private Rigidbody m_turret;
 
 
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+        m_turret = m_Rigidbody.transform.Find("TankTurret").GetComponent<Rigidbody>();
     }
 
 
@@ -32,6 +36,7 @@ public class TankMovement : MonoBehaviour
         m_Rigidbody.isKinematic = false;
         m_MovementInputValue = 0f;
         m_TurnInputValue = 0f;
+        m_Turretinputvalue = 0f;
     }
 
 
@@ -45,6 +50,7 @@ public class TankMovement : MonoBehaviour
     {
         m_MovementAxisName = "Vertical" + m_PlayerNumber;
         m_TurnAxisName = "Horizontal" + m_PlayerNumber;
+        m_TurretAxis = "TurretMovement" + m_PlayerNumber;
         m_OriginalPitch = m_MovementAudio.pitch;
 
         if (GameManager.IsSinglePlayer && m_PlayerNumber != 1)
@@ -58,6 +64,7 @@ public class TankMovement : MonoBehaviour
     {
         m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
         m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);
+        m_Turretinputvalue = CrossPlatformInputManager.GetAxis(m_TurretAxis);
         EngineAudio();
     }
 
@@ -90,6 +97,7 @@ public class TankMovement : MonoBehaviour
         // Move and turn the tank.
         Move();
         Turn();
+        TurnTurret();
     }
 
 
@@ -105,5 +113,12 @@ public class TankMovement : MonoBehaviour
         float turn = m_TurnInputValue * m_TurnSpeed * Time.deltaTime;
         Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
         m_Rigidbody.MoveRotation(m_Rigidbody.rotation * turnRotation);
+    }
+
+    private void TurnTurret()
+    {
+        float turn = m_Turretinputvalue * m_TurnSpeed * Time.deltaTime;
+        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
+        m_turret.MoveRotation(m_Rigidbody.rotation * turnRotation);
     }
 };

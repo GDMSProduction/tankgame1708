@@ -20,7 +20,7 @@ public class TankShooting : MonoBehaviour
     private float m_CurrentLaunchForce;  
     private float m_ChargeSpeed;         
     private bool m_Fired;
-    private WaitForSeconds m_Delay;//delay
+   // private WaitForSeconds m_Delay;//delay
     private float start;
 
     private void OnEnable()
@@ -28,7 +28,7 @@ public class TankShooting : MonoBehaviour
         // When the tank is turned on, reset the launch force and the UI
         m_CurrentLaunchForce = m_MinLaunchForce;
         m_AimSlider.value = m_MinLaunchForce;
-        m_Delay = new WaitForSeconds(m_FireDelay);
+        //m_Delay = new WaitForSeconds(m_FireDelay);
     }
 
 
