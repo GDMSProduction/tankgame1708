@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
     public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
     public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
-
+    public GameObject SpawnPoints;
 
     public static bool IsSinglePlayer;          //Is the game in SinglePlayer
 
@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private WaitForSeconds m_EndWait;           // Used to have a delay whilst the round or game ends.
     private TankManager m_RoundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
     private TankManager m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
+    private bool[] SpawnTaken;
 
 
     private void Start()
@@ -45,9 +46,36 @@ public class GameManager : MonoBehaviour
 
     private void SpawnAllTanks()
     {
+        System.Random rand = new System.Random();
+        SpawnTaken = new bool[8];
         // For all the tanks...
         for (int i = 0; i < m_Tanks.Length; i++)
         {
+            if (!GameManager.IsSinglePlayer)
+            {
+                int randomSpawn = rand.Next(0, 8);
+                bool spawnFound = false;
+
+
+                while (!spawnFound)
+                {
+                    if (SpawnTaken[randomSpawn] && randomSpawn < 8)
+                    {
+                        randomSpawn++;
+                    }
+                    else if (randomSpawn >= 8)
+                    {
+                        randomSpawn = 0;
+                    }
+                    if (!SpawnTaken[randomSpawn])
+                    {
+                        SpawnTaken[randomSpawn] = true;
+                        spawnFound = true;
+                    }
+                }
+                m_Tanks[i].m_SpawnPoint = SpawnPoints.transform.Find("SpawnPoint" + randomSpawn).transform;
+            }
+                
             // ... create them, set their player number and references needed for control.
             m_Tanks[i].m_Instance =
                 Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;

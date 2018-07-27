@@ -58,6 +58,7 @@ public class TankMovement : MonoBehaviour
         {
             m_MovementAxisName = "Enemy";
             m_TurnAxisName = "Enemy";
+            m_TurretAxis = "Enemy";
         }
     }
 
