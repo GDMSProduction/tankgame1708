@@ -12,12 +12,17 @@ public class MainMenu : MonoBehaviour {
     public void PlaySinglePlayer()
     {
         Debug.Log("Loading Game...");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        SceneManager.LoadScene("SinglePlayer");
     }
     public void PlayMultiplayerPlayer()
     {
         Debug.Log("Loading Game...");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("MultiplayerLocal");
+    }
+    public void PlayOnline()
+    {
+        Debug.Log("Loading Online...");
+        SceneManager.LoadScene("MultiplayerOnline");
     }
 
     public void QuitGame()
