@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using UnityEngine.Networking;
 
-
-public class TankMovement : MonoBehaviour
+public class TankMovement : NetworkBehaviour
 {
     public int m_PlayerNumber = 1;         
     public float m_Speed = 12f;            
@@ -21,7 +21,7 @@ public class TankMovement : MonoBehaviour
     private float m_TurnInputValue;        
     private float m_OriginalPitch;
     private float m_Turretinputvalue;
-   private GameObject m_turret;
+    private GameObject m_turret;
 
 
     private void Awake()
@@ -64,6 +64,8 @@ public class TankMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!isLocalPlayer) { return; }
+
         m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
         m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);
         m_Turretinputvalue = CrossPlatformInputManager.GetAxis(m_TurretAxis);

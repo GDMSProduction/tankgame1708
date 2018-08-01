@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public GameObject SpawnPoints;
 
     public static bool IsSinglePlayer;          //Is the game in SinglePlayer
-
+    public static bool IsOnline;                //Is the game in Online
 
     private int m_RoundNumber;                  // Which round the game is currently on.
     private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
@@ -30,8 +30,9 @@ public class GameManager : MonoBehaviour
     {
         m_RoundWinner = null;
         m_GameWinner = null;
-        if (SceneManager.GetActiveScene().buildIndex ==  2) {   IsSinglePlayer = true;    }
-        else {   IsSinglePlayer = false;   }
+        if (SceneManager.GetActiveScene().buildIndex == 2) { IsSinglePlayer = true; }
+        else if (SceneManager.GetActiveScene().buildIndex == 3) { IsOnline = true; }
+        else {   IsSinglePlayer = false;   IsOnline = false; }
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
@@ -45,6 +46,27 @@ public class GameManager : MonoBehaviour
 
 
     private void SpawnAllTanks()
+    {
+        if (IsOnline)
+        {
+            OnlineSpawn();
+        }
+
+        else if (IsSinglePlayer)
+        {
+            SinglePlayerSpawn();
+        }
+
+        else
+        {
+            LocalSpawn();
+        }
+
+        
+        
+    }
+
+    void LocalSpawn()
     {
         System.Random rand = new System.Random();
         SpawnTaken = new bool[8];
@@ -75,7 +97,7 @@ public class GameManager : MonoBehaviour
                 }
                 m_Tanks[i].m_SpawnPoint = SpawnPoints.transform.Find("SpawnPoint" + randomSpawn).transform;
             }
-                
+
             // ... create them, set their player number and references needed for control.
             m_Tanks[i].m_Instance =
                 Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
@@ -83,12 +105,32 @@ public class GameManager : MonoBehaviour
             m_Tanks[i].m_PlayerNumber = i + 1;
             m_Tanks[i].Setup();
         }
+    }
+
+    void OnlineSpawn()
+    {
         
+    }
+
+    void SinglePlayerSpawn()
+    {
+        for (int i = 0; i < m_Tanks.Length; i++)
+        {
+            m_Tanks[i].m_Instance =
+                Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
+            m_Tanks[i].m_Shooting = m_TankPrefab.GetComponent<TankShooting>();
+            m_Tanks[i].m_PlayerNumber = i + 1;
+            m_Tanks[i].Setup();
+        }
     }
 
 
     private void SetCameraTargets()
     {
+        if (true)
+        {
+
+        }
         // Create a collection of transforms the same size as the number of tanks.
         Transform[] targets = new Transform[m_Tanks.Length];
 

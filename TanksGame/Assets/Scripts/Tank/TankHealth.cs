@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class TankHealth : MonoBehaviour
+public class TankHealth : NetworkBehaviour
 {
     public float m_StartingHealth = 100f;          
     public Slider m_Slider;                        
@@ -14,7 +15,7 @@ public class TankHealth : MonoBehaviour
     private AudioSource m_ExplosionAudio;
     private ParticleSystem m_ExplosionParticles;
     [SerializeField]
-    private float m_CurrentHealth;
+    [SyncVar (hook = "OnChangeHealth")] private float m_CurrentHealth;
     private bool m_Dead;
 
 
@@ -43,26 +44,32 @@ public class TankHealth : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        if(!isServer)
+        {
+            return;
+        }
+
         // Adjust the tank's current health, update the UI based on the new health and check whether or not the tank is dead.
 
         // Reduce current health by the amount of damage done.
         m_CurrentHealth -= amount;
 
-        // Change the UI elements appropriately.
+        
+        // If the current health is at or below zero and it has not yet been registered, call OnDeath.
+    }
+    
+    void OnChangeHealth(float Health)
+    {
+        m_CurrentHealth = Health;
         SetHealthUI();
 
-        // If the current health is at or below zero and it has not yet been registered, call OnDeath.
         if (m_CurrentHealth <=0f && !m_Dead)
-        {
-            OnDeath();
-        }
+        {   OnDeath();  }
     }
-
 
     private void SetHealthUI()
     {
         // Adjust the value and colour of the slider.
-
         // Set the slider's value appropriately.
         m_Slider.value = m_CurrentHealth;
 

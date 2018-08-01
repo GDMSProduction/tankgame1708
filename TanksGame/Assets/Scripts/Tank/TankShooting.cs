@@ -2,10 +2,12 @@
 using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
 using System.Collections;
-public class TankShooting : MonoBehaviour
+using UnityEngine.Networking;
+
+public class TankShooting : NetworkBehaviour
 {
     public int m_PlayerNumber = 1;       
-    public Rigidbody m_Shell;            
+    public GameObject m_Shell;            
     public Transform m_FireTransform;    
     public Slider m_AimSlider;           
     public AudioSource m_ShootingAudio;  
@@ -47,6 +49,8 @@ public class TankShooting : MonoBehaviour
 
     private void Update()
     {
+        if (!isLocalPlayer) { return; }
+
         // The slider should have a default value of the minimum launch force.
         m_AimSlider.value = m_MinLaunchForce;
             
@@ -101,27 +105,22 @@ public class TankShooting : MonoBehaviour
                
         }
     }
-
-    //private IEnumerator delayer()
-    //{
-    //    Debug.Log("delay start");
-    //    yield return m_Delay;
-    //    Fire();
-    //    Debug.Log("delay ended");
-
-    //}
-    private void Fire()
+    
+    [Command]
+    void CmdFire()
     {
-
         // Set the fired flag so only Fire is only called once.
         m_Fired = true;
 
         // Create an instance of the shell and store a reference to it's rigidbody.
-        Rigidbody shellInstance =
-            Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
+        GameObject shellInstance =
+            (GameObject)Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation);
 
         // Set the shell's velocity to the launch force in the fire position's forward direction.
-        shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward; ;
+        shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;
+     
+        // Spawn the shell on the clients
+        NetworkServer.Spawn(shellInstance);
 
         // Change the clip to the firing clip and play it.
         m_ShootingAudio.clip = m_FireClip;
@@ -129,6 +128,11 @@ public class TankShooting : MonoBehaviour
 
         // Reset the launch force.  This is a precaution in case of missing button events.
         m_CurrentLaunchForce = m_MinLaunchForce;
-      
+    
+    }
+
+    private void Fire()
+    {
+        CmdFire();
     }
 }
