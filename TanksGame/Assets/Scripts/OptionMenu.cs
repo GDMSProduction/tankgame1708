@@ -49,8 +49,22 @@ public class OptionMenu : MonoBehaviour {
         beatbox.SetFloat("volume", volume);
     }
 
+    public void setsfxaudio(float volume)
+    {
+        beatbox.SetFloat("sfxvolume", volume);
+    }
 
-        public void setquality(int qualityindex)
+    public void setdrivingaudio(float volume)
+    {
+        beatbox.SetFloat("drivingvolume", volume);
+    }
+
+    public void setmusicaudio(float volume)
+    {
+        beatbox.SetFloat("musicvolume", volume);
+    }
+
+    public void setquality(int qualityindex)
     {
         QualitySettings.SetQualityLevel(qualityindex);
     }
