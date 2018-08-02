@@ -44,18 +44,21 @@ public class TankHealth : NetworkBehaviour
 
     public void TakeDamage(float amount)
     {
-        if(!isServer)
-        {
-            return;
-        }
-
+        if (GameManager.IsOnline)
+            if(!isServer)
+                return;
+    
         // Adjust the tank's current health, update the UI based on the new health and check whether or not the tank is dead.
 
         // Reduce current health by the amount of damage done.
         m_CurrentHealth -= amount;
 
-        
+
         // If the current health is at or below zero and it has not yet been registered, call OnDeath.
+        SetHealthUI();
+
+        if (m_CurrentHealth <= 0f && !m_Dead)
+        { OnDeath(); }
     }
     
     void OnChangeHealth(float Health)
