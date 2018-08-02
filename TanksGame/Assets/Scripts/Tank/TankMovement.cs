@@ -64,7 +64,8 @@ public class TankMovement : NetworkBehaviour
 
     private void Update()
     {
-        if (!isLocalPlayer) { return; }
+        if (GameManager.IsOnline)
+            if (!isLocalPlayer) { return; }
 
         m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
         m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);
