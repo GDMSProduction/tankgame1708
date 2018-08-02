@@ -127,10 +127,6 @@ public class GameManager : MonoBehaviour
 
     private void SetCameraTargets()
     {
-        if (true)
-        {
-
-        }
         // Create a collection of transforms the same size as the number of tanks.
         Transform[] targets = new Transform[m_Tanks.Length];
 
