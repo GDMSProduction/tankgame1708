@@ -7,18 +7,14 @@ using UnityEngine.UI;
 public class OptionMenu : MonoBehaviour {
 
     public AudioMixer beatbox;
-
     public Dropdown resolutiondropdown;
-
     Resolution[] resolutions;
+
     // Use this for initialization
-    void Start() {
-
-        resolutiondropdown.ClearOptions();
-
+    void Start()
+    {
         resolutions = Screen.resolutions;
-
-        
+        resolutiondropdown.ClearOptions();
 
         List<string> options = new List<string>();
 
@@ -28,26 +24,22 @@ public class OptionMenu : MonoBehaviour {
             string option = resolutions[i].width + " x " + resolutions[i].height;
             options.Add(option);
 
-
             if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
-            {
-                currentresolution = i;
-            }
+            {   currentresolution = i;  }
         }
 
         resolutiondropdown.AddOptions(options);
         resolutiondropdown.value = currentresolution;
         resolutiondropdown.RefreshShownValue();
-
     }
+
     public void setresolution(int resolutionindex)
-        {
+    {
         Resolution resolution = resolutions[resolutionindex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+    }
 
-}
-
-        public void setaudio(float volume)
+    public void setaudio(float volume)
     {
         beatbox.SetFloat("volume", volume);
     }
@@ -72,11 +64,9 @@ public class OptionMenu : MonoBehaviour {
         QualitySettings.SetQualityLevel(qualityindex);
     }
 
-        public void SetFullScreen(bool isfullscreen)
+    public void SetFullScreen(bool isfullscreen)
     {
         Screen.fullScreen = isfullscreen;
-        
     }
-  
 
 }

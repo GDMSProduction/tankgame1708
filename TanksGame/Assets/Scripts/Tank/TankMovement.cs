@@ -11,7 +11,6 @@ public class TankMovement : NetworkBehaviour
     public AudioClip m_EngineIdling;       
     public AudioClip m_EngineDriving;      
     public float m_PitchRange = 0.2f;
-
     
     private string m_MovementAxisName;     
     private string m_TurnAxisName;
@@ -22,6 +21,7 @@ public class TankMovement : NetworkBehaviour
     private float m_OriginalPitch;
     private float m_Turretinputvalue;
     private GameObject m_turret;
+    
 
 
     private void Awake()
@@ -102,7 +102,7 @@ public class TankMovement : NetworkBehaviour
         // Move and turn the tank.
         Move();
         Turn();
-       TurnTurret();
+        TurnTurret();
     }
 
 
