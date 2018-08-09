@@ -13,9 +13,12 @@ public class OptionMenu : MonoBehaviour {
     Resolution[] resolutions;
     // Use this for initialization
     void Start() {
-        resolutions = Screen.resolutions;
 
         resolutiondropdown.ClearOptions();
+
+        resolutions = Screen.resolutions;
+
+        
 
         List<string> options = new List<string>();
 
@@ -72,6 +75,8 @@ public class OptionMenu : MonoBehaviour {
         public void SetFullScreen(bool isfullscreen)
     {
         Screen.fullScreen = isfullscreen;
+        
     }
+  
 
 }
