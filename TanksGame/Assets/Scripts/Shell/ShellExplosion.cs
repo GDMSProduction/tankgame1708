@@ -9,8 +9,10 @@ public class ShellExplosion : NetworkBehaviour
     public float m_MaxDamage = 100f;                  
     public float m_ExplosionForce = 1000f;            
     public float m_MaxLifeTime = 2f;                  
-    public float m_ExplosionRadius = 5f;              
+    public float m_ExplosionRadius = 5f;
 
+
+    private const string PLAYER_TAG = "Player";
 
     private void Start()
     {
@@ -46,11 +48,22 @@ public class ShellExplosion : NetworkBehaviour
             if (!targetHealth)
                 continue;
 
+
+            
             // Calculate the amount of damage the target should take based on it's distance from the shell.
             float damage = CalculateDamage(targetRigidbody.position);
 
             // Deal this damage to the tank.
-            targetHealth.TakeDamage(damage);
+
+            //gets playerID and appends damage to them
+            if (colliders[i].GetComponent<Collider>().tag== PLAYER_TAG)
+            {
+
+
+                targetHealth.TakeDamage(colliders[i].GetComponent<Collider>().name, damage);
+            }
+
+            
         }
 
         // Unparent the particles from the shell.

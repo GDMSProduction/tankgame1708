@@ -52,14 +52,23 @@ public class TankShooting : NetworkBehaviour
         if (GameManager.IsOnline)
             if (!isLocalPlayer) { return; }
 
+        shoot();
+       
+    }
+    
+    [Client]
+    void shoot()
+    {
+
         // The slider should have a default value of the minimum launch force.
         m_AimSlider.value = m_MinLaunchForce;
-            
+
         // If the max force has been exceeded and the shell hasn't yet been launched...
         if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
         {
             // ... use the max force and launch the shell.
             m_CurrentLaunchForce = m_MaxLaunchForce;
+
             Fire();
         }
 
@@ -98,13 +107,12 @@ public class TankShooting : NetworkBehaviour
         //else if (Input.GetButtonUp(m_FireButton) && !m_Fired)
         else if (CrossPlatformInputManager.GetButtonUp(m_FireButton) && !m_Fired)
         {
-              
-                start = Time.realtimeSinceStartup;
-                // ... launch the shell.
-                Fire();
+
+            start = Time.realtimeSinceStartup;
+            // ... launch the shell.
+            Fire();
         }
     }
-    
     [Command]
     void CmdFire()
     {
@@ -113,7 +121,7 @@ public class TankShooting : NetworkBehaviour
 
         // Create an instance of the shell and store a reference to it's rigidbody.
         GameObject shellInstance =
-            (GameObject)Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation);
+            Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation);
 
         // Set the shell's velocity to the launch force in the fire position's forward direction.
         shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;
