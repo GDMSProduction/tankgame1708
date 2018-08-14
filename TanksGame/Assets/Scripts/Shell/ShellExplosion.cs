@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 public class ShellExplosion : NetworkBehaviour
 {
     public LayerMask m_TankMask;
+    public LayerMask m_RemoteTankMask;
     public ParticleSystem m_ExplosionParticles;       
     public AudioSource m_ExplosionAudio;              
     public float m_MaxDamage = 100f;                  
@@ -27,7 +28,7 @@ public class ShellExplosion : NetworkBehaviour
 
         // Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
         Collider[] colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, m_TankMask);
-
+        Collider[] remotecolliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, m_RemoteTankMask);
         // Go through all the colliders...
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -62,8 +63,53 @@ public class ShellExplosion : NetworkBehaviour
 
                 targetHealth.TakeDamage(colliders[i].GetComponent<Collider>().name, damage);
             }
+            else
+            {
+                targetHealth.TakeDamage(damage);
+            }
 
             
+        }
+
+        for (int i = 0; i < remotecolliders.Length; i++)
+        {
+            // ... and find their rigidbody.
+            Rigidbody targetRigidbody = remotecolliders[i].GetComponent<Rigidbody>();
+
+            // If they don't have a rigidbody, go on to the next collider.
+            if (!targetRigidbody)
+                continue;
+
+            // Add an explosion force.
+            targetRigidbody.AddExplosionForce(m_ExplosionForce, transform.position, m_ExplosionRadius);
+
+            // Find the TankHealth script associated with the rigidbody.
+            TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth>();
+
+            // If there is no TankHealth script attached to the gameobject, go on to the next collider.
+            if (!targetHealth)
+                continue;
+
+
+
+            // Calculate the amount of damage the target should take based on it's distance from the shell.
+            float damage = CalculateDamage(targetRigidbody.position);
+
+            // Deal this damage to the tank.
+
+            //gets playerID and appends damage to them
+            if (remotecolliders[i].GetComponent<Collider>().tag == PLAYER_TAG)
+            {
+
+
+                targetHealth.TakeDamage(remotecolliders[i].GetComponent<Collider>().name, damage);
+            }
+            else
+            {
+                targetHealth.TakeDamage(damage);
+            }
+
+
         }
 
         // Unparent the particles from the shell.
