@@ -15,7 +15,7 @@ public class TankManager
     public string m_ColoredPlayerText;                      // A string that represents the player with their number colored to match their tank.
     public GameObject m_Instance;                           // A reference to the instance of the tank when it is created.
     public int m_Wins;                                      // The number of wins this player has so far.
-
+    public string Name = "default";
 
     private TankMovement m_Movement;                        // Reference to tank's movement script, used to disable and enable control.
     public TankShooting m_Shooting;                        // Reference to tank's shooting script, used to disable and enable control.
