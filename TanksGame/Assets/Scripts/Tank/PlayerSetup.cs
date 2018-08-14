@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 
 [RequireComponent(typeof(TankHealth))]
 public class PlayerSetup : NetworkBehaviour {
 
-    
 
+
+    [SerializeField]
+    public Text m_PlayerNameDisplay;
     [SerializeField]
     Behaviour[] ToDisable;
     Camera sceneCamera;
 
     [SerializeField]
-    string remotelayername = "Remote_Players";
+    string remotelayername;
 
 	// Use this for initialization
 	void Start ()
@@ -28,11 +31,16 @@ public class PlayerSetup : NetworkBehaviour {
         {
             sceneCamera = Camera.main;
             if (sceneCamera != null)
-            sceneCamera.gameObject.SetActive(false);
-        }
-
-        
+                sceneCamera.gameObject.SetActive(false);
+        }   
+        SetPlayerName();
 	}
+
+    private void SetPlayerName()
+    {
+        m_PlayerNameDisplay.text = "Player " + GetComponent<NetworkIdentity>().netId.ToString();
+    }
+
     public override void OnStartClient()
     {
         base.OnStartClient();
