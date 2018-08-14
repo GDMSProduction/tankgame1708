@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using System;
 
+[Serializable]
 public class GameManager_Net : MonoBehaviour {
 
     private const string PLAYER_ID_PREFIX = "Player ";
 
     private static Dictionary<string, TankHealth> players = new Dictionary<string, TankHealth>();
+
+    public TankManager[] m_PlayerInstances;
+
 
     public static void RegisterPlayer(string _netid, TankHealth _player)
     {
@@ -15,11 +20,6 @@ public class GameManager_Net : MonoBehaviour {
         players.Add(_playerID, _player);
         _player.transform.name = _playerID;
     }
-    //void RegisterPlayer()
-    //{
-    //    string _ID = "Player " + GetComponent<NetworkIdentity>().netId;
-    //    transform.name = _ID;
-    //}
 
     public static void UnregisterPlayer(string _PlayerID)
     {

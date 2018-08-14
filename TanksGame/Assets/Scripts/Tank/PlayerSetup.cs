@@ -14,6 +14,8 @@ public class PlayerSetup : NetworkBehaviour {
     public Text m_PlayerNameDisplay;
     [SerializeField]
     Behaviour[] ToDisable;
+    [SerializeField]
+    public TankManager m_Tank;
     Camera sceneCamera;
 
     [SerializeField]
