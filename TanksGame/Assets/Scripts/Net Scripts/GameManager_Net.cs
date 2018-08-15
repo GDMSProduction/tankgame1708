@@ -12,6 +12,7 @@ public class GameManager_Net : MonoBehaviour {
     private static Dictionary<string, TankHealth> players = new Dictionary<string, TankHealth>();
 
     public TankManager[] m_PlayerInstances;
+    public static bool drawLeaderboard = false;
 
 
     public static void RegisterPlayer(string _netid, TankHealth _player)
@@ -32,17 +33,15 @@ public class GameManager_Net : MonoBehaviour {
     }
     private void OnGUI()
     {
-        GUILayout.BeginArea(new Rect(200, 200, 200, 500));
-        GUILayout.BeginVertical();
-
-
-        foreach (string _playerID in players.Keys)
+        if (drawLeaderboard)
         {
-            GUILayout.Label(_playerID + " - " + players[_playerID].transform.name);
+            GUILayout.BeginArea(new Rect(200, 200, 200, 500));
+            GUILayout.BeginVertical();
+            foreach (string _playerID in players.Keys)
+            {
+                GUILayout.Label(_playerID + " - " + players[_playerID].transform.name);
+            }
+            GUILayout.EndArea();
         }
-
-
-
-        GUILayout.EndArea();
     }
 }

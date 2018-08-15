@@ -30,9 +30,6 @@ public class GameManager : MonoBehaviour
     {
         m_RoundWinner = null;
         m_GameWinner = null;
-        if (SceneManager.GetActiveScene().buildIndex == 2) { IsSinglePlayer = true; }
-        else if (SceneManager.GetActiveScene().buildIndex == 3) { IsOnline = true; }
-        else {   IsSinglePlayer = false;   IsOnline = false; }
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
