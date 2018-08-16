@@ -202,7 +202,7 @@ public class TankShooting : NetworkBehaviour
         }
 
         // Spawn the shell on the clients
-        NetworkServer.SpawnWithClientAuthority(shellInstance, authority.gameObject);
+        NetworkServer.SpawnWithClientAuthority(shellInstance, authority);
 
         // Change the clip to the firing clip and play it.
         m_ShootingAudio.clip = m_FireClip;
