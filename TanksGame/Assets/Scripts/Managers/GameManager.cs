@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
     private TankManager m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
     private bool[] SpawnTaken;
 
-
     private void Start()
     {
         m_RoundWinner = null;
@@ -41,59 +40,48 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameLoop());
     }
 
-
-    private void SpawnAllTanks()
+    void SpawnAllTanks()
     {
-        if (IsOnline)
-        {
-            OnlineSpawn();
-        }
-
-        else if (IsSinglePlayer)
+        if (IsSinglePlayer)
         {
             SinglePlayerSpawn();
         }
 
         else
         {
-            LocalSpawn();
+            Spawn();
         }
-
-        
-        
     }
 
-    void LocalSpawn()
+    void Spawn()
     {
         System.Random rand = new System.Random();
         SpawnTaken = new bool[8];
         // For all the tanks...
         for (int i = 0; i < m_Tanks.Length; i++)
         {
-            if (!GameManager.IsSinglePlayer)
+            int randomSpawn = rand.Next(0, 8);
+            bool spawnFound = false;
+
+
+            while (!spawnFound)
             {
-                int randomSpawn = rand.Next(0, 8);
-                bool spawnFound = false;
-
-
-                while (!spawnFound)
+                if (SpawnTaken[randomSpawn] && randomSpawn < 8)
                 {
-                    if (SpawnTaken[randomSpawn] && randomSpawn < 8)
-                    {
-                        randomSpawn++;
-                    }
-                    else if (randomSpawn >= 8)
-                    {
-                        randomSpawn = 0;
-                    }
-                    if (!SpawnTaken[randomSpawn])
-                    {
-                        SpawnTaken[randomSpawn] = true;
-                        spawnFound = true;
-                    }
+                    randomSpawn++;
                 }
-                m_Tanks[i].m_SpawnPoint = SpawnPoints.transform.Find("SpawnPoint" + randomSpawn).transform;
+                else if (randomSpawn >= 8)
+                {
+                    randomSpawn = 0;
+                }
+                if (!SpawnTaken[randomSpawn])
+                {
+                    SpawnTaken[randomSpawn] = true;
+                    spawnFound = true;
+                }
             }
+            m_Tanks[i].m_SpawnPoint = SpawnPoints.transform.Find("SpawnPoint" + randomSpawn).transform;
+            
 
             // ... create them, set their player number and references needed for control.
             m_Tanks[i].m_Instance =
@@ -103,11 +91,7 @@ public class GameManager : MonoBehaviour
             m_Tanks[i].Setup();
         }
     }
-
-    void OnlineSpawn()
-    {
-        
-    }
+    
 
     void SinglePlayerSpawn()
     {
