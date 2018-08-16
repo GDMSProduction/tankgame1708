@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class TankMovement : NetworkBehaviour
 {
@@ -21,13 +22,13 @@ public class TankMovement : NetworkBehaviour
     private float m_OriginalPitch;
     private float m_Turretinputvalue;
     private GameObject m_turret;
+    NetworkManagerHUD NetHUD;
     
 
 
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-        //m_turret = this.gameObject.transform.GetChild(0).GetChild(3).gameObject;
         m_turret = m_Rigidbody.transform.Find("TankRenderers").Find("TankTurret").gameObject;
     }
 
@@ -49,6 +50,9 @@ public class TankMovement : NetworkBehaviour
 
     private void Start()
     {
+        if (GameManager.IsOnline)
+            NetHUD = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<NetworkManagerHUD>();
+
         m_MovementAxisName = "Vertical" + m_PlayerNumber;
         m_TurnAxisName = "Horizontal" + m_PlayerNumber;
         m_TurretAxis = "TurretMovement" + m_PlayerNumber;
@@ -65,7 +69,11 @@ public class TankMovement : NetworkBehaviour
     private void Update()
     {
         if (GameManager.IsOnline)
+        {
+            if (isLocalPlayer && CrossPlatformInputManager.GetButtonDown("DebugToggle")) { NetHUD.enabled = !NetHUD.enabled; }
+            if (isLocalPlayer && CrossPlatformInputManager.GetButtonDown("LeaderboardToggle")) { GameManager_Net.drawLeaderboard = !GameManager_Net.drawLeaderboard; }
             if (!isLocalPlayer) { return; }
+        }
 
         m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
         m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);

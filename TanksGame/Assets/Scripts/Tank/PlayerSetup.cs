@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -14,8 +15,6 @@ public class PlayerSetup : NetworkBehaviour {
     public Text m_PlayerNameDisplay;
     [SerializeField]
     Behaviour[] ToDisable;
-    [SerializeField]
-    public TankManager m_Tank;
     Camera sceneCamera;
 
     [SerializeField]
@@ -38,31 +37,33 @@ public class PlayerSetup : NetworkBehaviour {
         SetPlayerName();
 	}
 
-    private void SetPlayerName()
-    {
-        m_PlayerNameDisplay.text = "Player " + GetComponent<NetworkIdentity>().netId.ToString();
-    }
-
     public override void OnStartClient()
     {
         base.OnStartClient();
         string _netid = GetComponent<NetworkIdentity>().netId.ToString();
         TankHealth _player = GetComponent<TankHealth>();
-
         GameManager_Net.RegisterPlayer(_netid,_player);
+    }
+
+    private void SetPlayerName()
+    {
+        m_PlayerNameDisplay.text = "Player " + GetComponent<NetworkIdentity>().netId.ToString();
     }
 
     void Assignlayer()
     {
         gameObject.layer = LayerMask.NameToLayer(remotelayername);
     }
+
     void Disablescript()
     {
         for (int i = 0; i < ToDisable.Length; i++)
         {
             ToDisable[i].enabled = false;
         }
+
     }
+
     private void OnDisable()
     {
         if (sceneCamera != null)
