@@ -66,15 +66,11 @@ public class GameManager : MonoBehaviour
 
             while (!spawnFound)
             {
-                if (SpawnTaken[randomSpawn] && randomSpawn < 8)
+                if (SpawnTaken[randomSpawn])
                 {
-                    randomSpawn++;
+                    randomSpawn = rand.Next(0, 8);
                 }
-                else if (randomSpawn >= 8)
-                {
-                    randomSpawn = 0;
-                }
-                if (!SpawnTaken[randomSpawn])
+                else
                 {
                     SpawnTaken[randomSpawn] = true;
                     spawnFound = true;
