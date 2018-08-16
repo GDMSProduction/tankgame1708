@@ -70,6 +70,7 @@ public class GameManager_Net : NetworkBehaviour {
     {
        // m_Tanks.a
         string _playerID = PLAYER_ID_PREFIX + _netid;
+        players.Add(_playerID, _player);
         _player.transform.name = _playerID;
     }
 
