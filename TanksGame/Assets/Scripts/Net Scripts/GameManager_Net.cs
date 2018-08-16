@@ -13,7 +13,19 @@ public class GameManager_Net : MonoBehaviour {
 
     public TankManager[] m_PlayerInstances;
 
+    public void Update()
+    {
+        if (players.Count == 0)
+        {
 
+
+
+        }
+    }
+    public static int limit()
+    {
+        return players.Count;
+    }
     public static void RegisterPlayer(string _netid, TankHealth _player)
     {
         string _playerID = PLAYER_ID_PREFIX + _netid;

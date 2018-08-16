@@ -59,9 +59,9 @@ public class ShellExplosion : NetworkBehaviour
             //gets playerID and appends damage to them
             if (colliders[i].GetComponent<Collider>().tag== PLAYER_TAG)
             {
+                //TankHealth tankHealth = targetHealth;
 
-
-                targetHealth.TakeDamage(colliders[i].GetComponent<Collider>().name, damage);
+                targetHealth.CmdTakeDamage(colliders[i].GetComponent<Collider>().name, damage);
             }
             else
             {
@@ -85,7 +85,7 @@ public class ShellExplosion : NetworkBehaviour
 
             // Find the TankHealth script associated with the rigidbody.
             TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth>();
-
+           //TankHealth targetHealth;
             // If there is no TankHealth script attached to the gameobject, go on to the next collider.
             if (!targetHealth)
                 continue;
@@ -100,15 +100,16 @@ public class ShellExplosion : NetworkBehaviour
             //gets playerID and appends damage to them
             if (remotecolliders[i].GetComponent<Collider>().tag == PLAYER_TAG)
             {
+                //call player 1 from somewhere
 
-
-                targetHealth.TakeDamage(remotecolliders[i].GetComponent<Collider>().name, damage);
+                //remotecolliders[i].GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
+                targetHealth.CmdTakeDamage(remotecolliders[i].GetComponent<Collider>().name, damage);
+                //remotecolliders[i].gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
             }
             else
             {
                 targetHealth.TakeDamage(damage);
             }
-
 
         }
 

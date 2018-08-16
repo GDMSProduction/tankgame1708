@@ -4,18 +4,19 @@ using UnityEngine.Networking;
 
 public class TankHealth : NetworkBehaviour
 {
-    public float m_StartingHealth = 100f;          
-    public Slider m_Slider;                        
-    public Image m_FillImage;                      
-    public Color m_FullHealthColor = Color.green;  
-    public Color m_ZeroHealthColor = Color.red;    
+    public float m_StartingHealth = 100f;
+    public Slider m_Slider;
+    public Image m_FillImage;
+    public Color m_FullHealthColor = Color.green;
+    public Color m_ZeroHealthColor = Color.red;
     public GameObject m_ExplosionPrefab;
 
 
     private AudioSource m_ExplosionAudio;
     private ParticleSystem m_ExplosionParticles;
     [SerializeField]
-    [SyncVar (hook = "OnChangeHealth")] private float m_CurrentHealth;
+    [SyncVar(hook = "OnChangeHealth")]
+    private float m_CurrentHealth;
     private bool m_Dead;
 
 
@@ -40,14 +41,14 @@ public class TankHealth : NetworkBehaviour
         SetHealthUI();
         //testdamage();
     }
-    
+
 
     public void TakeDamage(float amount)
     {
-        if (GameManager.IsOnline)
-            if(!isServer)
-                return;
-    
+        //if (GameManager.IsOnline)
+        //    if(!isServer)
+        //        return;
+
         // Adjust the tank's current health, update the UI based on the new health and check whether or not the tank is dead.
 
         // Reduce current health by the amount of damage done.
@@ -61,20 +62,34 @@ public class TankHealth : NetworkBehaviour
         { OnDeath(); }
     }
 
-    public void TakeDamage(string _PlayerID,float amount)
+    [Command]
+    public void CmdTakeDamage(string _PlayerID, float amount)
     {
-        if (GameManager.IsOnline)
-            if (!isServer)
-                return;
+        //if (GameManager.IsOnline)
+        //    if (!isServer)
+        //        return;
 
 
         TankHealth tankHealth = GameManager_Net.Getplayer(_PlayerID);
         // Adjust the tank's current health, update the UI based on the new health and check whether or not the tank is dead.
 
         tankHealth.TakeDamage(amount);
+
+
+        Debug.Log("hit recieved");
     }
 
+    //[ClientRpc]
+    //public void RpcClientTakeDamage(string _PlayerID, float amount)
+    //{
+    //    TankHealth tankHealth = GameManager_Net.Getplayer(_PlayerID);
+    //    // Adjust the tank's current health, update the UI based on the new health and check whether or not the tank is dead.
 
+    //    tankHealth.TakeDamage(amount);
+
+
+    //    Debug.Log("hit recieved from client side");
+    //}
     void OnChangeHealth(float Health)
     {
         m_CurrentHealth = Health;

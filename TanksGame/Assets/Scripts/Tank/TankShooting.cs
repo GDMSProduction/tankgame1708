@@ -17,7 +17,7 @@ public class TankShooting : NetworkBehaviour
     public float m_MaxLaunchForce = 30f; 
     public float m_MaxChargeTime = 0.75f;
     public float m_FireDelay = 0.5f;//delay value
-
+    private GameObject authority;
     private string m_FireButton;         
     private float m_CurrentLaunchForce;  
     private float m_ChargeSpeed;         
@@ -178,6 +178,7 @@ public class TankShooting : NetworkBehaviour
     [Command]
     void CmdFire()
     {
+       
         // Set the fired flag so only Fire is only called once.
         m_Fired = true;
 
@@ -185,11 +186,23 @@ public class TankShooting : NetworkBehaviour
         GameObject shellInstance =
             Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation);
 
+        
+
         // Set the shell's velocity to the launch force in the fire position's forward direction.
-        shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;
-     
+      shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;
+
+        for (int i=0; i < GameManager_Net.limit(); i++)
+        {
+            if (GameManager_Net.Getplayer(i.ToString()).gameObject.GetComponent<NetworkIdentity>().hasAuthority)
+            {
+                authority = GameManager_Net.Getplayer(i.ToString()).gameObject;
+            }
+
+
+        }
+
         // Spawn the shell on the clients
-        NetworkServer.Spawn(shellInstance);
+        NetworkServer.SpawnWithClientAuthority(shellInstance, authority.gameObject);
 
         // Change the clip to the firing clip and play it.
         m_ShootingAudio.clip = m_FireClip;
