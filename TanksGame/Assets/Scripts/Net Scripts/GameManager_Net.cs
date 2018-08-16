@@ -22,33 +22,33 @@ public class GameManager_Net : NetworkBehaviour {
     private static Dictionary<string, TankHealth> players = new Dictionary<string, TankHealth>();
     private string m_RoundWinner;
     private string m_GameWinner;
-    
+
 
     private void Start()
     {
         m_RoundWinner = null;
         m_GameWinner = null;
 
+        SpawnAllTanks();
+        SetCameraTargets();
+
+        m_StartWait = new WaitForSeconds(m_StartDelay);
+        m_EndWait = new WaitForSeconds(m_EndDelay);
+        //StartCoroutine(GameLoop());
+        //Start Game Loop
+    }
+
     public void Update()
     {
         if (players.Count == 0)
         {
-        m_StartWait = new WaitForSeconds(m_StartDelay);
-        m_EndWait = new WaitForSeconds(m_EndDelay);
-
 
 
         }
     }
-        SpawnAllTanks();
-        SetCameraTargets();
-
-        //Start Game Loop
     public static int limit()
-        //StartCoroutine(GameLoop());
     {
         return players.Count;
-    }
     }
 
     private void SpawnAllTanks()
