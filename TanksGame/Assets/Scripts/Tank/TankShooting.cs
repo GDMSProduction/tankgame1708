@@ -6,23 +6,23 @@ using UnityEngine.Networking;
 
 public class TankShooting : NetworkBehaviour
 {
-    public int m_PlayerNumber = 1;       
-    public GameObject m_Shell;            
-    public Transform m_FireTransform;    
-    public Slider m_AimSlider;           
-    public AudioSource m_ShootingAudio;  
-    public AudioClip m_ChargingClip;     
-    public AudioClip m_FireClip;         
-    public float m_MinLaunchForce = 15f; 
-    public float m_MaxLaunchForce = 30f; 
+    public int m_PlayerNumber = 1;
+    public GameObject m_Shell;
+    public Transform m_FireTransform;
+    public Slider m_AimSlider;
+    public AudioSource m_ShootingAudio;
+    public AudioClip m_ChargingClip;
+    public AudioClip m_FireClip;
+    public float m_MinLaunchForce = 15f;
+    public float m_MaxLaunchForce = 30f;
     public float m_MaxChargeTime = 0.75f;
     public float m_FireDelay = 0.5f;//delay value
     private GameObject authority;
-    private string m_FireButton;         
-    private float m_CurrentLaunchForce;  
-    private float m_ChargeSpeed;         
+    private string m_FireButton;
+    private float m_CurrentLaunchForce;
+    private float m_ChargeSpeed;
     private bool m_Fired;
-   // private WaitForSeconds m_Delay;//delay
+    // private WaitForSeconds m_Delay;//delay
     private float start;
 
     private void OnEnable()
@@ -36,14 +36,14 @@ public class TankShooting : NetworkBehaviour
 
     private void Start()
     {
-        
+
         // The fire axis is based on the player number.
         m_FireButton = "Fire" + m_PlayerNumber;
 
         // The rate that the launch force charges up is the range of possible forces by the max charge time.
         m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
 
-        if (GameManager.IsSinglePlayer && m_PlayerNumber != 1) {  m_FireButton = "Enemy"; }
+        if (GameManager.IsSinglePlayer && m_PlayerNumber != 1) { m_FireButton = "Enemy"; }
     }
 
 
@@ -59,8 +59,8 @@ public class TankShooting : NetworkBehaviour
 
 
 
-        }
-    
+    }
+
     [Client]
     void cltshoot()
     {
@@ -178,7 +178,6 @@ public class TankShooting : NetworkBehaviour
     [Command]
     void CmdFire()
     {
-       
         // Set the fired flag so only Fire is only called once.
         m_Fired = true;
 
@@ -186,16 +185,16 @@ public class TankShooting : NetworkBehaviour
         GameObject shellInstance =
             Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation);
 
-        
+
 
         // Set the shell's velocity to the launch force in the fire position's forward direction.
-      shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;
+        shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;
 
-        for (int i=0; i < GameManager_Net.limit(); i++)
+        for (int i = 1; i <= GameManager_Net.limit(); i++)
         {
-            if (GameManager_Net.Getplayer(i.ToString()).gameObject.GetComponent<NetworkIdentity>().hasAuthority)
+            if (GameManager_Net.Getplayer("Player " + i.ToString()).gameObject.GetComponent<NetworkIdentity>().hasAuthority)
             {
-                authority = GameManager_Net.Getplayer(i.ToString()).gameObject;
+                authority = GameManager_Net.Getplayer("Player " + i.ToString()).gameObject;
             }
 
 
@@ -210,8 +209,16 @@ public class TankShooting : NetworkBehaviour
 
         // Reset the launch force.  This is a precaution in case of missing button events.
         m_CurrentLaunchForce = m_MinLaunchForce;
-    
+
+
+        //RpcFire();
     }
+
+    //[ClientRpc]
+    //void RpcFire()
+    //{
+        
+    //}
 
     private void Fire()
     {
@@ -236,5 +243,6 @@ public class TankShooting : NetworkBehaviour
             // Reset the launch force.  This is a precaution in case of missing button events.
             m_CurrentLaunchForce = m_MinLaunchForce;
         }
+
     }
 }
