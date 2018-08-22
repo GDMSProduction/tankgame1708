@@ -113,9 +113,14 @@ public class ShellExplosion : NetworkBehaviour
 
         }
 
-        //CmdShellstuff();
-       // Unparent the particles from the shell.
-                m_ExplosionParticles.transform.parent = null;
+        RpcShellstuff();
+    }
+
+    [ClientRpc]
+    void RpcShellstuff()
+    {
+        // Unparent the particles from the shell.
+        m_ExplosionParticles.transform.parent = null;
 
         // Play the particle system.
         m_ExplosionParticles.Play();
@@ -130,29 +135,8 @@ public class ShellExplosion : NetworkBehaviour
 
         // Destroy the shell.
         Destroy(gameObject);
+
     }
-
-    //    [Command]
-    //    void CmdShellstuff()
-    //    {
-    //        // Unparent the particles from the shell.
-    //        m_ExplosionParticles.transform.parent = null;
-
-    //        // Play the particle system.
-    //        m_ExplosionParticles.Play();
-
-    //        // Play the explosion sound effect.
-    //        m_ExplosionAudio.Play();
-
-    //        // Once the particles have finished, destroy the gameobject they are on.
-    //#pragma warning disable CS0618 // Type or member is obsolete
-    //        Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.duration);
-    //#pragma warning restore CS0618 // Type or member is obsolete
-
-    //        // Destroy the shell.
-    //        Destroy(gameObject);
-
-    //    }
 
 
     private float CalculateDamage(Vector3 targetPosition)
