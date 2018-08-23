@@ -16,6 +16,7 @@ public class PlayerSetup : NetworkBehaviour {
     [SerializeField]
     Behaviour[] ToDisable;
     Camera sceneCamera;
+    public Vector3 startPos;
 
     [SerializeField]
     string remotelayername;
@@ -30,19 +31,23 @@ public class PlayerSetup : NetworkBehaviour {
         }
         else
         {
+
             sceneCamera = Camera.main;
             if (sceneCamera != null)
                 sceneCamera.gameObject.SetActive(false);
         }   
+
+        string _netid = GetComponent<NetworkIdentity>().netId.ToString();
+        GameObject _player = GameObject.Find("OnlineTank(Clone)");
+        GameManager_Net.RegisterPlayer(_netid, _player);
         SetPlayerName();
+        startPos = gameObject.transform.position;
 	}
 
+    
     public override void OnStartClient()
     {
         base.OnStartClient();
-        string _netid = GetComponent<NetworkIdentity>().netId.ToString();
-        GameObject _player = GameObject.Find("Player " + _netid);
-        GameManager_Net.RegisterPlayer(_netid,_player);
     }
 
     private void SetPlayerName()
