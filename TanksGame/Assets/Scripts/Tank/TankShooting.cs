@@ -192,9 +192,9 @@ public class TankShooting : NetworkBehaviour
 
         for (int i = 1; i <= GameManager_Net.limit(); i++)
         {
-            if (GameManager_Net.Getplayer("Player " + i.ToString()).gameObject.GetComponent<NetworkIdentity>().hasAuthority)
+            if (GameManager_Net.Getplayer("Player " + i.ToString()).GetComponent<NetworkIdentity>().hasAuthority)
             {
-                authority = GameManager_Net.Getplayer("Player " + i.ToString()).gameObject;
+                authority = GameManager_Net.Getplayer("Player " + i.ToString());
             }
 
 

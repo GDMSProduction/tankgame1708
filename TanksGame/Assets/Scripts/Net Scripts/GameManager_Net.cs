@@ -19,7 +19,8 @@ public class GameManager_Net : NetworkBehaviour {
     private WaitForSeconds m_StartWait;
     private WaitForSeconds m_EndWait;
     private const string PLAYER_ID_PREFIX = "Player ";
-    private static Dictionary<string, TankHealth> players = new Dictionary<string, TankHealth>();
+    private static Dictionary<string, GameObject> players = new Dictionary<string, GameObject>();
+    public Behaviour[] toDisbale;
     private string m_RoundWinner;
     private string m_GameWinner;
 
@@ -66,12 +67,12 @@ public class GameManager_Net : NetworkBehaviour {
         }
     }
 
-    public static void RegisterPlayer(string _netid, TankHealth _player)
+    public static void RegisterPlayer(string _netid, GameObject tank_Instance)
     {
        // m_Tanks.a
         string _playerID = PLAYER_ID_PREFIX + _netid;
-        players.Add(_playerID, _player);
-        _player.transform.name = _playerID;
+        players.Add(_playerID, tank_Instance);
+        tank_Instance.transform.name = _playerID;
     }
 
     public static void UnregisterPlayer(string _PlayerID)
@@ -79,7 +80,7 @@ public class GameManager_Net : NetworkBehaviour {
         players.Remove(_PlayerID);
     }
 
-    public static TankHealth Getplayer(string _playerID)
+    public static GameObject Getplayer(string _playerID)
     {
         return players[_playerID];
     }

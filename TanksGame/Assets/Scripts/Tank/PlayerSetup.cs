@@ -41,7 +41,7 @@ public class PlayerSetup : NetworkBehaviour {
     {
         base.OnStartClient();
         string _netid = GetComponent<NetworkIdentity>().netId.ToString();
-        TankHealth _player = GetComponent<TankHealth>();
+        GameObject _player = GameObject.Find("Player " + _netid);
         GameManager_Net.RegisterPlayer(_netid,_player);
     }
 
