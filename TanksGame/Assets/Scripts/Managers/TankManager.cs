@@ -16,7 +16,8 @@ public class TankManager
     public GameObject m_Instance;                           // A reference to the instance of the tank when it is created.
     public int m_Wins;                                      // The number of wins this player has so far.
     public string Name = "default";
-
+    public TankColor usercolor = new TankColor();
+    public int userchoice;
     private TankMovement m_Movement;                        // Reference to tank's movement script, used to disable and enable control.
     public TankShooting m_Shooting;                        // Reference to tank's shooting script, used to disable and enable control.
     private GameObject m_CanvasGameObject;                  // Used to disable the world space UI during the Starting and Ending phases of each round.
@@ -39,11 +40,25 @@ public class TankManager
         // Get all of the renderers of the tank.
         MeshRenderer[] renderers = m_Instance.GetComponentsInChildren<MeshRenderer>();
 
-        // Go through all the renderers...
-        for (int i = 0; i < renderers.Length; i++)
+
+        if (m_PlayerNumber == 1)
         {
-            // ... set their material color to the color specific to this tank.
-            renderers[i].material.color = m_PlayerColor;
+          m_PlayerColor = usercolor.GetColor();
+            // Go through all the renderers...
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                // ... set their material color to the color specific to this tank.
+                renderers[i].material.color = m_PlayerColor;
+            }
+        }
+        else
+        {
+            // Go through all the renderers...
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                // ... set their material color to the color specific to this tank.
+                renderers[i].material.color = m_PlayerColor;
+            }
         }
     }
 
