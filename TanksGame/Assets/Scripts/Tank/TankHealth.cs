@@ -65,17 +65,8 @@ public class TankHealth : NetworkBehaviour
     [Command]
     public void CmdTakeDamage(string _PlayerID, float amount)
     {
-        //if (GameManager.IsOnline)
-        //    if (!isServer)
-        //        return;
-
-
         TankHealth tankHealth = GameManager_Net.Getplayer(_PlayerID).GetComponent<TankHealth>();
-        // Adjust the tank's current health, update the UI based on the new health and check whether or not the tank is dead.
-
         tankHealth.TakeDamage(amount);
-
-
         Debug.Log("hit recieved");
     }
 

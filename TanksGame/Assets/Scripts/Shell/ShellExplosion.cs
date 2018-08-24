@@ -57,7 +57,7 @@ public class ShellExplosion : NetworkBehaviour
             // Deal this damage to the tank.
 
             //gets playerID and appends damage to them
-            if (colliders[i].GetComponent<Collider>().tag== PLAYER_TAG)
+            if (colliders[i].GetComponent<Collider>().tag == PLAYER_TAG)
             {
                 //TankHealth tankHealth = targetHealth;
 
@@ -100,8 +100,6 @@ public class ShellExplosion : NetworkBehaviour
             //gets playerID and appends damage to them
             if (remotecolliders[i].GetComponent<Collider>().tag == PLAYER_TAG)
             {
-                //call player 1 from somewhere
-
                 //remotecolliders[i].GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
                 targetHealth.CmdTakeDamage(remotecolliders[i].GetComponent<Collider>().name, damage);
                 //remotecolliders[i].gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
@@ -112,7 +110,6 @@ public class ShellExplosion : NetworkBehaviour
             }
 
         }
-
         RpcShellstuff();
     }
 
@@ -135,7 +132,6 @@ public class ShellExplosion : NetworkBehaviour
 
         // Destroy the shell.
         Destroy(gameObject);
-
     }
 
 

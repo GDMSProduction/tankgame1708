@@ -190,15 +190,15 @@ public class TankShooting : NetworkBehaviour
         // Set the shell's velocity to the launch force in the fire position's forward direction.
         shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;
 
-        for (int i = 1; i <= GameManager_Net.limit(); i++)
+        
+        foreach (var instance in GameManager_Net.players)
         {
-            if (GameManager_Net.Getplayer("Player " + i.ToString()).GetComponent<NetworkIdentity>().hasAuthority)
+            if (GameManager_Net.Getplayer(instance.Key).GetComponent<NetworkIdentity>().hasAuthority)
             {
-                authority = GameManager_Net.Getplayer("Player " + i.ToString());
+                authority = GameManager_Net.Getplayer(instance.Key);
             }
-
-
         }
+        
 
         // Spawn the shell on the clients
         NetworkServer.SpawnWithClientAuthority(shellInstance, authority);
@@ -211,14 +211,8 @@ public class TankShooting : NetworkBehaviour
         m_CurrentLaunchForce = m_MinLaunchForce;
 
 
-        //RpcFire();
     }
-
-    //[ClientRpc]
-    //void RpcFire()
-    //{
-        
-    //}
+    
 
     private void Fire()
     {
