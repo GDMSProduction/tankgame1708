@@ -41,8 +41,9 @@ public class TankColor3 : MonoBehaviour
 
         if (_userchoice == 0)
         {
-
-            return Color.blue;
+            Color color = new Color(160.0f / 256.0f, 32.0f / 256.0f, 240.0f / 256.0f);
+            return color;
+            
         }
         else if (_userchoice == 1)
         {
@@ -58,6 +59,11 @@ public class TankColor3 : MonoBehaviour
         {
 
             return Color.green;
+        }
+        else if (_userchoice == 4)
+        {
+
+            return Color.blue;
         }
         else
         {
