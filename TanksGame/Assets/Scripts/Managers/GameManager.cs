@@ -32,12 +32,18 @@ public class GameManager : MonoBehaviour
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
-
+        //if check if true changed size
+        //if (MultiScenceData.playercount == -1)
+        //{
+        //    MultiScenceData.playercount = 0; 
+        //}
         SpawnAllTanks();
         SetCameraTargets();
 
         // Once the tanks have been created and the camera is using them as targets, start the game.
         StartCoroutine(GameLoop());
+
+      
     }
 
     void SpawnAllTanks()
@@ -58,7 +64,7 @@ public class GameManager : MonoBehaviour
         System.Random rand = new System.Random();
         SpawnTaken = new bool[8];
         // For all the tanks...
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Length-MultiScenceData.playercount; i++)
         {
             int randomSpawn = rand.Next(0, 8);
             bool spawnFound = false;
@@ -104,8 +110,17 @@ public class GameManager : MonoBehaviour
 
     private void SetCameraTargets()
     {
-        // Create a collection of transforms the same size as the number of tanks.
-        Transform[] targets = new Transform[m_Tanks.Length];
+        Transform[] targets;
+        if (IsSinglePlayer)
+        {
+            // Create a collection of transforms the same size as the number of tanks.
+            targets = new Transform[m_Tanks.Length];
+        }
+        else
+        {
+            // Create a collection of transforms the same size as the number of tanks.
+            targets = new Transform[m_Tanks.Length - MultiScenceData.playercount];
+        }
 
         // For each of these transforms...
         for (int i = 0; i < targets.Length; i++)
@@ -233,7 +248,7 @@ public class GameManager : MonoBehaviour
 
         else
         {
-            for (int i = 0; i < m_Tanks.Length; i++)
+            for (int i = 0; i < m_Tanks.Length-MultiScenceData.playercount; i++)
             {
                 // ... and if they are active, increment the counter.
                 if (m_Tanks[i].m_Instance.activeSelf)
@@ -258,7 +273,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Go through all the tanks...
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Length-MultiScenceData.playercount; i++)
         {
             // ... and if one of them is active, it is the winner so return it.
             if (m_Tanks[i].m_Instance.activeSelf)
@@ -274,7 +289,7 @@ public class GameManager : MonoBehaviour
     private TankManager GetGameWinner()
     {
         // Go through all the tanks...
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Length-MultiScenceData.playercount; i++)
         {
             // ... and if one of them has enough rounds to win the game, return it.
             if (m_Tanks[i].m_Wins == m_NumRoundsToWin)
@@ -300,7 +315,7 @@ public class GameManager : MonoBehaviour
         message += "\n\n\n\n";
 
         // Go through all the tanks and add each of their scores to the message.
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Length-MultiScenceData.playercount; i++)
         {
             message += m_Tanks[i].m_ColoredPlayerText + ": " + m_Tanks[i].m_Wins + " WINS\n";
         }
@@ -316,7 +331,7 @@ public class GameManager : MonoBehaviour
     // This function is used to turn all the tanks back on and reset their positions and properties.
     private void ResetAllTanks()
     {
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Length-MultiScenceData.playercount; i++)
         {
             m_Tanks[i].Reset();
         }
@@ -325,7 +340,7 @@ public class GameManager : MonoBehaviour
 
     private void EnableTankControl()
     {
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Length-MultiScenceData.playercount; i++)
         {
             m_Tanks[i].EnableControl();
         }
@@ -334,7 +349,7 @@ public class GameManager : MonoBehaviour
 
     private void DisableTankControl()
     {
-        for (int i = 0; i < m_Tanks.Length; i++)
+        for (int i = 0; i < m_Tanks.Length-MultiScenceData.playercount; i++)
         {
             m_Tanks[i].DisableControl();
         }

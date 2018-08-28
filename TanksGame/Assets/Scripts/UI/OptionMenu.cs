@@ -8,6 +8,7 @@ public class OptionMenu : MonoBehaviour {
 
     public AudioMixer beatbox;
     public Dropdown resolutiondropdown;
+    
     Resolution[] resolutions;
 
     // Use this for initialization
@@ -69,4 +70,24 @@ public class OptionMenu : MonoBehaviour {
         Screen.fullScreen = isfullscreen;
     }
 
+    //public static int userchioce;
+    //public void GetColorChoice(int _userchoice)
+    //{
+    //    userchioce = _userchoice;
+    //}
+
+
+
+}
+
+
+public static class datatransfer
+{
+    //public static TankColor tankColor;
+    //public static Color Color;
+
+    //public static void SetColor(int userindex)
+    //{
+    //    Color = tankColor.GetColor(userindex);
+    //}
 }
