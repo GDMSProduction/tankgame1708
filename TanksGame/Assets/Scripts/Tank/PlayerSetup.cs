@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 
 [RequireComponent(typeof(TankHealth))]
-public class PlayerSetup : NetworkBehaviour {
+public class PlayerSetup : NetworkBehaviour
+{
 
 
 
@@ -21,8 +22,8 @@ public class PlayerSetup : NetworkBehaviour {
     [SerializeField]
     string remotelayername;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
         if (!isLocalPlayer)
         {
@@ -35,16 +36,16 @@ public class PlayerSetup : NetworkBehaviour {
             sceneCamera = Camera.main;
             if (sceneCamera != null)
                 sceneCamera.gameObject.SetActive(false);
-        }   
+        }
 
         string _netid = GetComponent<NetworkIdentity>().netId.ToString();
         GameObject _player = GameObject.Find("OnlineTank(Clone)");
         GameManager_Net.RegisterPlayer(_netid, _player);
         SetPlayerName();
         startPos = gameObject.transform.position;
-	}
+    }
 
-    
+
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -74,6 +75,17 @@ public class PlayerSetup : NetworkBehaviour {
         if (sceneCamera != null)
             sceneCamera.gameObject.SetActive(true);
 
-        GameManager_Net.UnregisterPlayer(transform.name);
+        //GameManager_Net.UnregisterPlayer(transform.name);
     }
+
+    private void OnEnable()
+    {
+        if (isLocalPlayer)
+        {
+            sceneCamera = Camera.main;
+            if (sceneCamera != null)
+                sceneCamera.gameObject.SetActive(false);
+        }
+    }
+
 }

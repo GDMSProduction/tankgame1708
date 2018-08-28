@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class GameManager_Net : NetworkBehaviour {
 
-    public int m_NumRoundsToWin = 5;
+    public int m_NumRoundsToWin = 2;
     public float m_StartDelay = 3f;
     public float m_EndDelay = 3f;
     public static bool drawLeaderboard = false;
@@ -19,10 +20,19 @@ public class GameManager_Net : NetworkBehaviour {
     private WaitForSeconds m_EndWait;
     private const string PLAYER_ID_PREFIX = "Player ";
     public static Dictionary<string, GameObject> players = new Dictionary<string, GameObject>();
-    public Behaviour[] toDisbale;
     private string m_RoundWinner;
     private string m_GameWinner;
 
+    private void OnPlayerDisconnected(NetworkPlayer player)
+    {
+        foreach (var playerID in players)
+        {
+            if (Getplayer(playerID.Key) == null)
+            {
+                players.Remove(playerID.Key);
+            }
+        }
+    }
 
     private void Start()
     {
@@ -40,32 +50,30 @@ public class GameManager_Net : NetworkBehaviour {
 
     private IEnumerator GameLoop()
     {
-       /* if (players.Count < 2)
-        {}
+        // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
+        yield return StartCoroutine(RoundStarting());
+
+        // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
+        yield return StartCoroutine(RoundPlaying());
+
+        // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
+        yield return StartCoroutine(RoundEnding());
+
+        // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
+        if (m_GameWinner != null)
+        {
+            //Disconnect Players            
+            m_MessageText.text = m_GameWinner + " Wins!";
+            SceneManager.LoadScene("Main Menu");
+            
+        }
 
         else
-        {  */
-            // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
-            yield return StartCoroutine(RoundStarting());
-
-            // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
-            yield return StartCoroutine(RoundPlaying());
-
-            // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
-            yield return StartCoroutine(RoundEnding());
-
-            // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
-            if (m_GameWinner != null)
-            {
-                //Disconnect Players
-            }
-
-            else
-            {
-                // If there isn't a winner yet, restart this coroutine so the loop continues.
-                // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
-                StartCoroutine(GameLoop());
-            }
+        {
+            // If there isn't a winner yet, restart this coroutine so the loop continues.
+            // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
+            StartCoroutine(GameLoop());
+        }
         
     }
 
@@ -97,8 +105,23 @@ public class GameManager_Net : NetworkBehaviour {
     private IEnumerator RoundEnding()
     {
         DisableTankControl();
-
         m_RoundWinner = null;
+
+        foreach (var player in players)
+        {
+            if (Getplayer(player.Key).activeSelf)
+            {
+                m_RoundWinner = player.Key;
+                m_MessageText.text = "Winner: " + m_RoundWinner;
+                Getplayer(player.Key).GetComponent<TankHealth>().WonRound();
+
+                if (Getplayer(player.Key).GetComponent<TankHealth>().GetWins() == m_NumRoundsToWin)
+                {
+                    m_GameWinner = player.Key;
+                }
+            }
+        }
+
 
 
         yield return m_EndWait;
@@ -108,15 +131,20 @@ public class GameManager_Net : NetworkBehaviour {
     {
         int numTanksLeft = 0;
 
-        foreach (var player in players)
+        if (players.Count > 1)
         {
-            if (Getplayer(player.Key).activeSelf)
+            foreach (var player in players)
             {
-                numTanksLeft++;
+                if (Getplayer(player.Key).activeSelf)
+                {
+                    numTanksLeft++;
+                }
             }
+            return numTanksLeft <= 1;
         }
-
-        return numTanksLeft <= 1;
+            
+        else
+            return false;
     }
 
 
@@ -126,6 +154,7 @@ public class GameManager_Net : NetworkBehaviour {
         {
             GameObject cPlayer = Getplayer(player.Key);
             cPlayer.transform.position = cPlayer.GetComponent<PlayerSetup>().startPos;
+            cPlayer.SetActive(false);
             cPlayer.SetActive(true);
         }
     }
@@ -190,7 +219,7 @@ public class GameManager_Net : NetworkBehaviour {
             GUILayout.BeginVertical();
             foreach (string _playerID in players.Keys)
             {
-                GUILayout.Label(_playerID + " - " + players[_playerID].transform.name);
+                GUILayout.Label(_playerID + " - Wins: " + players[_playerID].GetComponent<TankHealth>().GetWins());
             }
             GUILayout.EndArea();
         }
