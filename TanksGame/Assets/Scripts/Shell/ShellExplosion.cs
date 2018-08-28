@@ -110,7 +110,28 @@ public class ShellExplosion : NetworkBehaviour
             }
 
         }
+
+        if(isClient)
         RpcShellstuff();
+        else
+        {
+            // Unparent the particles from the shell.
+            m_ExplosionParticles.transform.parent = null;
+
+            // Play the particle system.
+            m_ExplosionParticles.Play();
+
+            // Play the explosion sound effect.
+            m_ExplosionAudio.Play();
+
+            // Once the particles have finished, destroy the gameobject they are on.
+#pragma warning disable CS0618 // Type or member is obsolete
+            Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.duration);
+#pragma warning restore CS0618 // Type or member is obsolete
+
+            // Destroy the shell.
+            Destroy(gameObject);
+        }
     }
 
     [ClientRpc]
@@ -124,7 +145,7 @@ public class ShellExplosion : NetworkBehaviour
 
         // Play the explosion sound effect.
         m_ExplosionAudio.Play();
-
+            
         // Once the particles have finished, destroy the gameobject they are on.
 #pragma warning disable CS0618 // Type or member is obsolete
         Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.duration);

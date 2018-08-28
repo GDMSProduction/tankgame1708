@@ -10,6 +10,7 @@ public class MultiScenceData
     public static int userchioce2=-1;
     public static int userchioce3=-1;
     public static int userchioce4=-1;
+    public static int playercount;
     //    public static void GetColorChoice(int _userchoice)
     //    {
     //        userchioce = _userchoice;
