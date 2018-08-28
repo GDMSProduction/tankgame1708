@@ -58,6 +58,12 @@ public class TankColor : MonoBehaviour {
 
             return Color.green;
         }
+        else if(_userchoice ==4)
+        {
+
+           Color color = new Color(160.0f/256.0f, 32.0f/256.0f, 240.0f/256.0f);
+            return color;
+        }
         else
         {
             return Color.white;
