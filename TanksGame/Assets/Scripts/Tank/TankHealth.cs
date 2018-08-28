@@ -11,7 +11,7 @@ public class TankHealth : NetworkBehaviour
     public Color m_ZeroHealthColor = Color.red;
     public GameObject m_ExplosionPrefab;
 
-
+    private int wins = 0;
     private AudioSource m_ExplosionAudio;
     private ParticleSystem m_ExplosionParticles;
     [SerializeField]
@@ -120,5 +120,15 @@ public class TankHealth : NetworkBehaviour
 
         // Turn the tank off.
         gameObject.SetActive(false);
+    }
+
+    public void WonRound()
+    {
+        wins++;
+    }
+
+    public int GetWins()
+    {
+        return wins;
     }
 }
