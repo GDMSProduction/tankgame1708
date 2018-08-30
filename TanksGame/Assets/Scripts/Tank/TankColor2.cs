@@ -29,45 +29,51 @@ public class TankColor2 : MonoBehaviour
         {
             SetUserChoice(testDropdown.value);
         });
+
+      //  GetColor();
+    }
+    private void Update()
+    {
+        GetColor();
     }
     public void SetUserChoice(int _choice)
     {
         MultiScenceData.userchioce2 = _choice;
     }
 
-    public Color GetColor()
+    public void GetColor()
     {
         int _userchoice = MultiScenceData.userchioce2;
 
         if (_userchoice == 0)
         {
 
-            return Color.red;
+             MultiScenceData.usercolor2 = Color.red;
         }
         else if (_userchoice == 1)
         {
 
-            return Color.black;
+             MultiScenceData.usercolor2 = Color.black;
         }
         else if (_userchoice == 2)
         {
 
-            return Color.blue;
+             MultiScenceData.usercolor2 = Color.blue;
         }
         else if (_userchoice == 3)
         {
 
-            return Color.green;
+             MultiScenceData.usercolor2 = Color.green;
         }
         else if (_userchoice == 4)
         {
 
             Color color = new Color(160.0f / 256.0f, 32.0f / 256.0f, 240.0f / 256.0f);
-            return color;
+             MultiScenceData.usercolor2 = color;
         }
         else
         {
-            return Color.white;
+             MultiScenceData.usercolor2 = Color.white;
         }
     }
 }

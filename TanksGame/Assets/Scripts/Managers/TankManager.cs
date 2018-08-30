@@ -16,10 +16,10 @@ public class TankManager
     public GameObject m_Instance;                           // A reference to the instance of the tank when it is created.
     public int m_Wins;                                      // The number of wins this player has so far.
     public string Name = "default";
-    public TankColor usercolor = new TankColor();
-    public TankColor2 usercolor2 = new TankColor2();
-    public TankColor3 usercolor3 = new TankColor3();
-    public TankColor4 usercolor4 = new TankColor4();
+    //TankColor usercolor = new TankColor();
+    //TankColor2 usercolor2 = new TankColor2();
+    //TankColor3 usercolor3 = new TankColor3();
+    //TankColor4 usercolor4 = new TankColor4();
     public int userchoice;
     private TankMovement m_Movement;                        // Reference to tank's movement script, used to disable and enable control.
     public TankShooting m_Shooting;                        // Reference to tank's shooting script, used to disable and enable control.
@@ -48,7 +48,7 @@ public class TankManager
         {
             if (MultiScenceData.userchioce != -1)
             {
-                m_PlayerColor = usercolor.GetColor();
+                m_PlayerColor = MultiScenceData.usercolor1;
             }
             // Go through all the renderers...
             for (int i = 0; i < renderers.Length; i++)
@@ -61,7 +61,7 @@ public class TankManager
         {
             if (MultiScenceData.userchioce2 != -1)
             {
-                m_PlayerColor = usercolor2.GetColor();
+                m_PlayerColor = MultiScenceData.usercolor2;
             }
             // Go through all the renderers...
             for (int i = 0; i < renderers.Length; i++)
@@ -74,7 +74,7 @@ public class TankManager
         {
             if (MultiScenceData.userchioce3 != -1)
             {
-                m_PlayerColor = usercolor3.GetColor();
+                m_PlayerColor = MultiScenceData.usercolor3;
             }
             // Go through all the renderers...
             for (int i = 0; i < renderers.Length; i++)
@@ -87,7 +87,7 @@ public class TankManager
         {
             if (MultiScenceData.userchioce4 != -1)
             {
-                m_PlayerColor = usercolor4.GetColor();
+                m_PlayerColor = MultiScenceData.usercolor4;
             }
             // Go through all the renderers...
             for (int i = 0; i < renderers.Length; i++)
