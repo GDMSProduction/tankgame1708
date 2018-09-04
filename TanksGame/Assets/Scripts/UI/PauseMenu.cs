@@ -11,7 +11,7 @@ public class PauseMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (CrossPlatformInputManager.GetButtonDown("Cancel"))
+        if (CrossPlatformInputManager.GetButtonDown("Cancel")|| Input.GetKey(KeyCode.Escape))
         {
             if (IsGamePaused)
             {
