@@ -7,8 +7,17 @@ using UnityStandardAssets.CrossPlatformInput;
 
 
 public class MainMenu : MonoBehaviour {
-   
 
+    
+
+
+    public void Update()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            QuitGame();
+        }
+    }
     public void PlaySinglePlayer()
     {
         Debug.Log("Loading Game...");
