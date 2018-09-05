@@ -38,7 +38,7 @@ public class MainMenu : MonoBehaviour {
         Debug.Log("Loading Online...");
         GameManager.IsSinglePlayer = false;
         GameManager.IsOnline = true; 
-        SceneManager.LoadScene("MultiplayerOnline");
+        SceneManager.LoadScene("OnlineLobby");
     }
 
     public void QuitGame()

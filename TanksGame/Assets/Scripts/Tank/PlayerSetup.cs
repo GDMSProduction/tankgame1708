@@ -18,6 +18,9 @@ public class PlayerSetup : NetworkBehaviour
     Behaviour[] ToDisable;
     Camera sceneCamera;
     public Vector3 startPos;
+    public string playerName;
+    public string NetID;
+    public Color playerColor;
 
     [SerializeField]
     string remotelayername;
@@ -32,17 +35,29 @@ public class PlayerSetup : NetworkBehaviour
         }
         else
         {
-
             sceneCamera = Camera.main;
             if (sceneCamera != null)
                 sceneCamera.gameObject.SetActive(false);
         }
 
-        string _netid = GetComponent<NetworkIdentity>().netId.ToString();
+        NetID = "Player" + GetComponent<NetworkIdentity>().netId.ToString();
         GameObject _player = GameObject.Find("OnlineTank(Clone)");
-        GameManager_Net.RegisterPlayer(_netid, _player);
-        SetPlayerName();
+        GameManager_Net.RegisterPlayer(NetID, _player);
         startPos = gameObject.transform.position;
+        _player.name = playerName;
+        m_PlayerNameDisplay.text = _player.name;
+
+
+
+
+        /*
+        MeshRenderer[] renderers = gameObject.GetComponentsInChildren<MeshRenderer>();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            // ... set their material color to the color specific to this tank.
+            renderers[i].material.color = playerColor;
+        }
+        */
     }
 
 
@@ -50,12 +65,7 @@ public class PlayerSetup : NetworkBehaviour
     {
         base.OnStartClient();
     }
-
-    private void SetPlayerName()
-    {
-        m_PlayerNameDisplay.text = "Player " + GetComponent<NetworkIdentity>().netId.ToString();
-    }
-
+    
     void Assignlayer()
     {
         gameObject.layer = LayerMask.NameToLayer(remotelayername);
