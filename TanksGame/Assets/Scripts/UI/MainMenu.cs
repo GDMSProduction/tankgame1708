@@ -8,13 +8,14 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class MainMenu : MonoBehaviour {
 
-    
+    public bool ismainmenu;
 
 
     public void Update()
     {
         if (Input.GetKey(KeyCode.Escape))
         {
+            if(ismainmenu == true)
             QuitGame();
         }
     }
