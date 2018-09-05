@@ -61,7 +61,7 @@ public class ShellExplosion : NetworkBehaviour
             {
                 //TankHealth tankHealth = targetHealth;
 
-                targetHealth.CmdTakeDamage(colliders[i].GetComponent<Collider>().name, damage);
+                targetHealth.CmdTakeDamage(colliders[i].GetComponent<PlayerSetup>().NetID, damage);
             }
             else
             {

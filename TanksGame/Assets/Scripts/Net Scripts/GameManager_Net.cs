@@ -196,9 +196,7 @@ public class GameManager_Net : NetworkBehaviour {
     public static void RegisterPlayer(string _netid, GameObject tank_Instance)
     {
        // m_Tanks.a
-        string _playerID = PLAYER_ID_PREFIX + _netid;
-        players.Add(_playerID, tank_Instance);
-        tank_Instance.transform.name = _playerID;
+        players.Add(_netid, tank_Instance);
     }
 
     public static void UnregisterPlayer(string _PlayerID)

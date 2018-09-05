@@ -50,8 +50,8 @@ public class TankMovement : NetworkBehaviour
 
     private void Start()
     {
-        if (GameManager.IsOnline)
-            NetHUD = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<NetworkManagerHUD>();
+     //   if (GameManager.IsOnline)
+     //       NetHUD = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<NetworkManagerHUD>();
 
         m_MovementAxisName = "Vertical" + m_PlayerNumber;
         m_TurnAxisName = "Horizontal" + m_PlayerNumber;
