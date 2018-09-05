@@ -8,13 +8,15 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class MainMenu : MonoBehaviour {
 
-    
+    [SerializeField]
+    public bool ismainmenu;
 
 
     public void Update()
     {
         if (Input.GetKey(KeyCode.Escape))
         {
+            if(ismainmenu == true)
             QuitGame();
         }
     }
@@ -37,7 +39,7 @@ public class MainMenu : MonoBehaviour {
         Debug.Log("Loading Online...");
         GameManager.IsSinglePlayer = false;
         GameManager.IsOnline = true; 
-        SceneManager.LoadScene("OnlineLobby");
+        SceneManager.LoadScene("MultiplayerOnline");
     }
 
     public void QuitGame()
