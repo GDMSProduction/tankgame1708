@@ -36,6 +36,7 @@ public class GameManager_Net : NetworkBehaviour {
 
     private void Start()
     {
+        players.Clear();
         m_RoundWinner = null;
         m_GameWinner = null;
 
@@ -64,8 +65,7 @@ public class GameManager_Net : NetworkBehaviour {
         {
             //Disconnect Players            
             m_MessageText.text = m_GameWinner + " Wins!";
-            SceneManager.LoadScene("Main Menu");
-            
+            SceneManager.LoadScene("OnlineLobby");
         }
 
         else
@@ -111,13 +111,13 @@ public class GameManager_Net : NetworkBehaviour {
         {
             if (Getplayer(player.Key).activeSelf)
             {
-                m_RoundWinner = player.Key;
+                m_RoundWinner = Getplayer(player.Key).name;
                 m_MessageText.text = "Winner: " + m_RoundWinner;
                 Getplayer(player.Key).GetComponent<TankHealth>().WonRound();
 
                 if (Getplayer(player.Key).GetComponent<TankHealth>().GetWins() == m_NumRoundsToWin)
                 {
-                    m_GameWinner = player.Key;
+                    m_GameWinner = Getplayer(player.Key).name;
                 }
             }
         }
