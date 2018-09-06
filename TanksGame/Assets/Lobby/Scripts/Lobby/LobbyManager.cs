@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
 using System.Collections;
-
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace Prototype.NetworkLobby
 {
@@ -65,6 +65,12 @@ namespace Prototype.NetworkLobby
             DontDestroyOnLoad(gameObject);
 
             SetServerInfo("Offline", "None");
+        }
+
+        public void LoadMainMenu()
+        {
+              SceneManager.LoadSceneAsync("Main Menu");
+              Destroy(GameObject.Find("LobbyManager"));
         }
 
         public override void OnLobbyClientSceneChanged(NetworkConnection conn)
@@ -418,4 +424,5 @@ namespace Prototype.NetworkLobby
             infoPanel.Display("Cient error : " + (errorCode == 6 ? "timeout" : errorCode.ToString()), "Close", null);
         }
     }
+
 }

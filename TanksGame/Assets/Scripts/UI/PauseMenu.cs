@@ -41,6 +41,8 @@ public class PauseMenu : MonoBehaviour {
     public void LoadMenu()
     {
         Debug.Log("Loading Main Menu");
+        Destroy(GameObject.Find("LobbyManager"));
+        Destroy(GameObject.Find("NetworkManager"));
         SceneManager.LoadScene("Main Menu");
         Time.timeScale = 1f;
     }
