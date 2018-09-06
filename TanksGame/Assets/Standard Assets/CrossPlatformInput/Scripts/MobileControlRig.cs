@@ -25,6 +25,10 @@ namespace Standard_Assets.CrossPlatformInput.Scripts
 	{
 		CheckEnableControlRig();
 	}
+    void Update()
+    {
+            //if controller detected
+    }
 #else
         public int callbackOrder
         {

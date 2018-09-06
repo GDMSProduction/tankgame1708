@@ -81,13 +81,13 @@ public class OptionMenu : MonoBehaviour {
 }
 
 
-public static class datatransfer
-{
-    //public static TankColor tankColor;
-    //public static Color Color;
+//public static class datatransfer
+//{
+//    //public static TankColor tankColor;
+//    //public static Color Color;
 
-    //public static void SetColor(int userindex)
-    //{
-    //    Color = tankColor.GetColor(userindex);
-    //}
-}
+//    //public static void SetColor(int userindex)
+//    //{
+//    //    Color = tankColor.GetColor(userindex);
+//    //}
+//}
