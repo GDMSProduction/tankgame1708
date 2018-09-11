@@ -10,10 +10,12 @@ public class TankHealth : NetworkBehaviour
     public Color m_FullHealthColor = Color.green;
     public Color m_ZeroHealthColor = Color.red;
     public GameObject m_ExplosionPrefab;
+    public GameObject m_DeadtankPrefab;
 
     private int wins = 0;
     private AudioSource m_ExplosionAudio;
     private ParticleSystem m_ExplosionParticles;
+    private GameObject m_deadtank;
     [SerializeField]
     [SyncVar(hook = "OnChangeHealth")]
     private float m_CurrentHealth;
@@ -24,10 +26,12 @@ public class TankHealth : NetworkBehaviour
     {
         // Instantiate the explosion prefab and get a reference to the particle system on it.
         m_ExplosionParticles = Instantiate(m_ExplosionPrefab).GetComponent<ParticleSystem>();
+        
         // Get a reference to the audio source on the instantiated prefab.
         m_ExplosionAudio = m_ExplosionParticles.GetComponent<AudioSource>();
         // Disable the prefab so it can be activated when it's required.
         m_ExplosionParticles.gameObject.SetActive(false);
+        m_DeadtankPrefab.gameObject.SetActive(false);
     }
 
 
@@ -108,6 +112,7 @@ public class TankHealth : NetworkBehaviour
         // Set the flag so that this function is only called once.
         m_Dead = true;
 
+        Vector3 deadtanklocation = transform.position;
         // Move the instantiated explosion prefab to the tank's position and turn it on.
         m_ExplosionParticles.transform.position = transform.position;
         m_ExplosionParticles.gameObject.SetActive(true);
@@ -118,8 +123,16 @@ public class TankHealth : NetworkBehaviour
         // Play the tank explosion sound effect.
         m_ExplosionAudio.Play();
 
+        m_DeadtankPrefab.gameObject.SetActive(true);
+        m_deadtank = Instantiate(m_DeadtankPrefab, deadtanklocation, Quaternion.identity);
+
+      //  m_DeadtankPrefab.transform.position = deadtanklocation;
+        
+        
         // Turn the tank off.
         gameObject.SetActive(false);
+
+       
     }
 
     public void WonRound()
