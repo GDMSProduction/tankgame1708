@@ -30,7 +30,8 @@ public class TankColor2 : MonoBehaviour
             SetUserChoice(testDropdown.value);
         });
 
-      //  GetColor();
+        testDropdown.value = MultiScenceData.userchioce2;
+        testDropdown.RefreshShownValue();
     }
     private void Update()
     {

@@ -24,17 +24,25 @@ public class TankColor : MonoBehaviour {
 
     private void Start()
     {
+        
+
         testDropdown.onValueChanged.AddListener(delegate
         {
             SetUserChoice(testDropdown.value);
         });
 
-       // GetColor();
+        testDropdown.value = MultiScenceData.userchioce;
+        testDropdown.RefreshShownValue();
+        // GetColor();
     }
 
     private void Update()
     {
+        testDropdown.RefreshShownValue();
+
         GetColor();
+
+        
     }
 
     public void SetUserChoice(int _choice)

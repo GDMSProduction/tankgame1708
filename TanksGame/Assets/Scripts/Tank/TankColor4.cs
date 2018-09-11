@@ -31,7 +31,8 @@ public class TankColor4 : MonoBehaviour
         });
 
 
-       // GetColor();
+        testDropdown.value = MultiScenceData.userchioce4;
+        testDropdown.RefreshShownValue();
     }
 
     private void Update()
