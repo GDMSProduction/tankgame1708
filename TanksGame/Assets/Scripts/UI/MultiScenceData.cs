@@ -16,6 +16,11 @@ public class MultiScenceData
     public static Color usercolor4 = new Color(99.0f / 256.0f, 99.0f / 256.0f, 99.0f / 256.0f);
 
     public static int playercount;
+
+    public static int player1team=1;
+    public static int player2team = 2;
+    public static int player3team = 3;
+    public static int player4team = 4;
     //    public static void GetColorChoice(int _userchoice)
     //    {
     //        userchioce = _userchoice;
