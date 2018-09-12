@@ -225,7 +225,7 @@ public class TankShooting : NetworkBehaviour
 
             // Create an instance of the shell and store a reference to it's rigidbody.
             GameObject shellInstance =
-                (GameObject)Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation);
+                Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation);
 
             // Set the shell's velocity to the launch force in the fire position's forward direction.
             shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;

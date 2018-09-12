@@ -70,7 +70,6 @@ public class TankMovement : NetworkBehaviour
     {
         if (GameManager.IsOnline)
         {
-            if (isLocalPlayer && CrossPlatformInputManager.GetButtonDown("DebugToggle")) { NetHUD.enabled = !NetHUD.enabled; }
             if (isLocalPlayer && CrossPlatformInputManager.GetButtonDown("LeaderboardToggle")) { GameManager_Net.drawLeaderboard = !GameManager_Net.drawLeaderboard; }
             if (!isLocalPlayer) { return; }
         }

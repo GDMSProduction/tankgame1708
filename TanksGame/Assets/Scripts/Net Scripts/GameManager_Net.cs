@@ -18,11 +18,11 @@ public class GameManager_Net : NetworkBehaviour {
     private int m_RoundNumber;
     private WaitForSeconds m_StartWait;
     private WaitForSeconds m_EndWait;
-    private const string PLAYER_ID_PREFIX = "Player ";
     public static Dictionary<string, GameObject> players = new Dictionary<string, GameObject>();
     private string m_RoundWinner;
     private string m_GameWinner;
 
+    /*
     private void OnPlayerDisconnected(NetworkPlayer player)
     {
         foreach (var playerID in players)
@@ -33,10 +33,11 @@ public class GameManager_Net : NetworkBehaviour {
             }
         }
     }
+    */
 
     private void Start()
     {
-        players.Clear();
+        //players.Clear();
         m_RoundWinner = null;
         m_GameWinner = null;
 
@@ -83,8 +84,8 @@ public class GameManager_Net : NetworkBehaviour {
 
         // As soon as the round starts reset the tanks and make sure they can't move.
         DisableTankControl();
-
-         // Increment the round number and display text showing the players what round it is.
+        
+        // Increment the round number and display text showing the players what round it is.
         m_RoundNumber++;
         m_MessageText.text = "ROUND " + m_RoundNumber;
         yield return m_StartWait;
@@ -176,13 +177,6 @@ public class GameManager_Net : NetworkBehaviour {
     }
 
 
-
-
-
-
-
-
-
     private void SetCameraTargets()
     {
         Transform[] targets = new Transform[players.Count];
@@ -217,7 +211,7 @@ public class GameManager_Net : NetworkBehaviour {
             GUILayout.BeginVertical();
             foreach (string _playerID in players.Keys)
             {
-                GUILayout.Label(_playerID + " - Wins: " + players[_playerID].GetComponent<TankHealth>().GetWins());
+                GUILayout.Label(players[_playerID].name + " - Wins: " + players[_playerID].GetComponent<TankHealth>().GetWins());
             }
             GUILayout.EndArea();
         }

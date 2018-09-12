@@ -18,9 +18,12 @@ public class PlayerSetup : NetworkBehaviour
     Behaviour[] ToDisable;
     Camera sceneCamera;
     public Vector3 startPos;
-    public string playerName;
     public string NetID;
-    public Color playerColor;
+
+    [SyncVar]
+    public string playerName;
+    [SyncVar]
+    public Color playerColor = Color.green;
 
     [SerializeField]
     string remotelayername;
@@ -40,6 +43,13 @@ public class PlayerSetup : NetworkBehaviour
                 sceneCamera.gameObject.SetActive(false);
         }
 
+    }
+
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
         NetID = "Player" + GetComponent<NetworkIdentity>().netId.ToString();
         GameObject _player = GameObject.Find("OnlineTank(Clone)");
         GameManager_Net.RegisterPlayer(NetID, _player);
@@ -47,23 +57,12 @@ public class PlayerSetup : NetworkBehaviour
         _player.name = playerName;
         m_PlayerNameDisplay.text = _player.name;
 
-
-
-
-        /*
         MeshRenderer[] renderers = gameObject.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < renderers.Length; i++)
         {
             // ... set their material color to the color specific to this tank.
             renderers[i].material.color = playerColor;
         }
-        */
-    }
-
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
     }
     
     void Assignlayer()
@@ -71,7 +70,7 @@ public class PlayerSetup : NetworkBehaviour
         gameObject.layer = LayerMask.NameToLayer(remotelayername);
     }
 
-    void Disablescript()
+    public void Disablescript()
     {
         for (int i = 0; i < ToDisable.Length; i++)
         {
@@ -93,8 +92,8 @@ public class PlayerSetup : NetworkBehaviour
         if (isLocalPlayer)
         {
             sceneCamera = Camera.main;
-            if (sceneCamera != null)
-                sceneCamera.gameObject.SetActive(false);
+            //if (sceneCamera != null)
+              //  sceneCamera.gameObject.SetActive(false);
         }
     }
 
