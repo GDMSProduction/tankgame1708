@@ -12,7 +12,7 @@ public class TankMovement : NetworkBehaviour
     public AudioClip m_EngineIdling;       
     public AudioClip m_EngineDriving;      
     public float m_PitchRange = 0.2f;
-    
+    public bool audio;
     private string m_MovementAxisName;     
     private string m_TurnAxisName;
     private string m_TurretAxis;
@@ -77,7 +77,9 @@ public class TankMovement : NetworkBehaviour
         m_MovementInputValue = CrossPlatformInputManager.GetAxis(m_MovementAxisName);
         m_TurnInputValue = CrossPlatformInputManager.GetAxis(m_TurnAxisName);
         m_Turretinputvalue = CrossPlatformInputManager.GetAxis(m_TurretAxis);
-        EngineAudio();
+      //  if (audio == true) {
+            EngineAudio();
+       // }
     }
 
     private void EngineAudio()

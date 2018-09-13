@@ -21,6 +21,7 @@ public class TankManager
     //TankColor3 usercolor3 = new TankColor3();
     //TankColor4 usercolor4 = new TankColor4();
     public int userchoice;
+    //public bool EngineAudio;
     private TankMovement m_Movement;                        // Reference to tank's movement script, used to disable and enable control.
     public TankShooting m_Shooting;                        // Reference to tank's shooting script, used to disable and enable control.
     private GameObject m_CanvasGameObject;                  // Used to disable the world space UI during the Starting and Ending phases of each round.
@@ -28,8 +29,11 @@ public class TankManager
 
     public void Setup()
     {
+
+        
         // Get references to the components.
         m_Movement = m_Instance.GetComponent<TankMovement>();
+       // m_Movement.audio = EngineAudio;
         m_Shooting = m_Instance.GetComponent<TankShooting>();
         m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
 
