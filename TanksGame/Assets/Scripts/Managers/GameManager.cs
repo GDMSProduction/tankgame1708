@@ -90,7 +90,10 @@ public class GameManager : MonoBehaviour
                 Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
             m_Tanks[i].m_Shooting = m_TankPrefab.GetComponent<TankShooting>();
             m_Tanks[i].m_PlayerNumber = i + 1;
+            //m_Tanks[i].EngineAudio = true;
             m_Tanks[i].Setup();
+           
+
         }
     }
     
@@ -103,7 +106,14 @@ public class GameManager : MonoBehaviour
                 Instantiate(m_TankPrefab, m_Tanks[i].m_SpawnPoint.position, m_Tanks[i].m_SpawnPoint.rotation) as GameObject;
             m_Tanks[i].m_Shooting = m_TankPrefab.GetComponent<TankShooting>();
             m_Tanks[i].m_PlayerNumber = i + 1;
+           // m_Tanks[0].EngineAudio = true;
             m_Tanks[i].Setup();
+
+
+            if (i > 0)
+            {
+                m_Tanks[i].m_Instance.GetComponent<AudioSource>().enabled = false;
+            }
         }
     }
 
