@@ -46,7 +46,7 @@ public class TankManager
 
         if (m_PlayerNumber == 1)
         {
-            if (MultiScenceData.userchioce != -1)
+            if (MultiScenceData.userchoice != -1)
             {
                 m_PlayerColor = MultiScenceData.usercolor1;
             }
@@ -59,7 +59,7 @@ public class TankManager
         }
         else if (m_PlayerNumber == 2)
         {
-            if (MultiScenceData.userchioce2 != -1)
+            if (MultiScenceData.userchoice2 != -1)
             {
                 m_PlayerColor = MultiScenceData.usercolor2;
             }
@@ -72,7 +72,7 @@ public class TankManager
         }
         else if (m_PlayerNumber == 3)
         {
-            if (MultiScenceData.userchioce3 != -1)
+            if (MultiScenceData.userchoice3 != -1)
             {
                 m_PlayerColor = MultiScenceData.usercolor3;
             }
@@ -85,7 +85,7 @@ public class TankManager
         }
         else if (m_PlayerNumber == 4)
         {
-            if (MultiScenceData.userchioce4 != -1)
+            if (MultiScenceData.userchoice4 != -1)
             {
                 m_PlayerColor = MultiScenceData.usercolor4;
             }
@@ -98,7 +98,6 @@ public class TankManager
         }
         else
         {
-
             // Go through all the renderers...
             for (int i = 0; i < renderers.Length; i++)
             {

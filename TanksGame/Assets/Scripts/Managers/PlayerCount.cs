@@ -16,6 +16,11 @@ public class PlayerCount : MonoBehaviour {
         });
     }
 
+    private void Update()
+    {
+
+    }
+
     public void SetUserChoice(int _choice)
     {
         MultiScenceData.playercount = _choice;

@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TankColor : MonoBehaviour {
-
+    
+    [SerializeField]
+    public GameObject P1;
 
 
     //color by hexadecimal
@@ -31,7 +33,7 @@ public class TankColor : MonoBehaviour {
             SetUserChoice(testDropdown.value);
         });
 
-        testDropdown.value = MultiScenceData.userchioce;
+        testDropdown.value = MultiScenceData.userchoice;
         testDropdown.RefreshShownValue();
         // GetColor();
     }
@@ -41,18 +43,28 @@ public class TankColor : MonoBehaviour {
         testDropdown.RefreshShownValue();
 
         GetColor();
+        UpdateMMTanks();
 
         
     }
 
+    void UpdateMMTanks()
+    {
+        MeshRenderer[] renderers = P1.GetComponentsInChildren<MeshRenderer>();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material.color = MultiScenceData.usercolor1;
+        }
+    }
+
     public void SetUserChoice(int _choice)
     {
-        MultiScenceData.userchioce = _choice;
+        MultiScenceData.userchoice = _choice;
     }
 
     public void GetColor()
     {
-        int _userchoice = MultiScenceData.userchioce;
+        int _userchoice = MultiScenceData.userchoice;
 
         if (_userchoice == 0)
         {
