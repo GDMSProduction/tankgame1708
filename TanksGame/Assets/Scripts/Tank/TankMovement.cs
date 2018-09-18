@@ -12,7 +12,6 @@ public class TankMovement : NetworkBehaviour
     public AudioClip m_EngineIdling;       
     public AudioClip m_EngineDriving;      
     public float m_PitchRange = 0.2f;
-    public bool audio;
     private string m_MovementAxisName;     
     private string m_TurnAxisName;
     private string m_TurretAxis;

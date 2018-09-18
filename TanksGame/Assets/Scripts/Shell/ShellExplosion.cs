@@ -110,9 +110,11 @@ public class ShellExplosion : NetworkBehaviour
             }
 
         }
-
-        if(isClient)
-        RpcShellstuff();
+        if (GameManager.IsOnline)
+        {
+        
+                CmdShellstuff();
+        }
         else
         {
             // Unparent the particles from the shell.
@@ -133,6 +135,14 @@ public class ShellExplosion : NetworkBehaviour
             Destroy(gameObject);
         }
     }
+
+    [Command]
+    void CmdShellstuff()
+    {
+        RpcShellstuff();
+    }
+
+
 
     [ClientRpc]
     void RpcShellstuff()

@@ -49,16 +49,16 @@ public class TankShooting : NetworkBehaviour
 
     private void Update()
     {
-        if (GameManager.IsOnline)
-        {
-            if (!isLocalPlayer) { return; }
-            else { cltshoot(); }
+        //if (GameManager.IsOnline)
+        //{
+        //    if (!isLocalPlayer) { return; }
+        //    else { cltshoot(); }
 
-        }
-        else { shoot(); }
+        //}
+        //else { shoot(); }
 
 
-
+        shoot();
     }
 
     [Client]
@@ -178,6 +178,14 @@ public class TankShooting : NetworkBehaviour
     [Command]
     void CmdFire()
     {
+        RpcFire();
+
+    }
+
+
+    [ClientRpc]
+    void RpcFire()
+    {
         // Set the fired flag so only Fire is only called once.
         m_Fired = true;
 
@@ -190,7 +198,7 @@ public class TankShooting : NetworkBehaviour
         // Set the shell's velocity to the launch force in the fire position's forward direction.
         shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;
 
-        
+
         foreach (var instance in GameManager_Net.players)
         {
             if (GameManager_Net.Getplayer(instance.Key).GetComponent<NetworkIdentity>().hasAuthority)
@@ -198,11 +206,15 @@ public class TankShooting : NetworkBehaviour
                 authority = GameManager_Net.Getplayer(instance.Key);
             }
         }
-        
+
 
         // Spawn the shell on the clients
         NetworkServer.SpawnWithClientAuthority(shellInstance, authority);
 
+       
+
+
+        
         // Change the clip to the firing clip and play it.
         m_ShootingAudio.clip = m_FireClip;
         m_ShootingAudio.Play();
@@ -212,12 +224,21 @@ public class TankShooting : NetworkBehaviour
 
 
     }
-    
+
+
+
 
     private void Fire()
     {
+
         if (GameManager.IsOnline)
-            CmdFire();
+        {
+            if (isClient)
+                CmdFire();
+            else
+                RpcFire();
+
+        }
         else
         {
             // Set the fired flag so only Fire is only called once.
