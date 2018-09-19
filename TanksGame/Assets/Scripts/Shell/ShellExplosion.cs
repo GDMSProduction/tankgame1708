@@ -59,9 +59,12 @@ public class ShellExplosion : NetworkBehaviour
             //gets playerID and appends damage to them
             if (colliders[i].GetComponent<Collider>().tag == PLAYER_TAG)
             {
-                //TankHealth tankHealth = targetHealth;
-
-                targetHealth.CmdTakeDamage(colliders[i].GetComponent<PlayerSetup>().NetID, damage);
+                if (!isServer)
+                    //remotecolliders[i].GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
+                    targetHealth.CmdTakeDamage(colliders[i].GetComponent<Collider>().name, damage);
+                //remotecolliders[i].gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
+                else
+                    targetHealth.RpcTakeDamage(colliders[i].GetComponent<Collider>().name, damage);
             }
             else
             {
@@ -100,9 +103,12 @@ public class ShellExplosion : NetworkBehaviour
             //gets playerID and appends damage to them
             if (remotecolliders[i].GetComponent<Collider>().tag == PLAYER_TAG)
             {
+                if(!isServer)
                 //remotecolliders[i].GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
                 targetHealth.CmdTakeDamage(remotecolliders[i].GetComponent<Collider>().name, damage);
                 //remotecolliders[i].gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
+                else
+                targetHealth.RpcTakeDamage(remotecolliders[i].GetComponent<Collider>().name, damage);
             }
             else
             {
@@ -112,8 +118,10 @@ public class ShellExplosion : NetworkBehaviour
         }
         if (GameManager.IsOnline)
         {
-        
+            if (!isServer)
                 CmdShellstuff();
+            else
+                RpcShellstuff();
         }
         else
         {

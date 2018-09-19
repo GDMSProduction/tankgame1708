@@ -49,16 +49,15 @@ public class TankShooting : NetworkBehaviour
 
     private void Update()
     {
-        //if (GameManager.IsOnline)
-        //{
-        //    if (!isLocalPlayer) { return; }
-        //    else { cltshoot(); }
+        if (GameManager.IsOnline)
+        {
+            if (!isLocalPlayer) { return; }
+            else { cltshoot(); }
 
-        //}
-        //else { shoot(); }
+        }
+        else { shoot(); }
 
 
-        shoot();
     }
 
     [Client]
@@ -199,20 +198,20 @@ public class TankShooting : NetworkBehaviour
         shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;
 
 
-        foreach (var instance in GameManager_Net.players)
-        {
-            if (GameManager_Net.Getplayer(instance.Key).GetComponent<NetworkIdentity>().hasAuthority)
-            {
-                authority = GameManager_Net.Getplayer(instance.Key);
-            }
-        }
+        //foreach (var instance in GameManager_Net.players)
+        //{
+        //    if (GameManager_Net.Getplayer(instance.Key).GetComponent<NetworkIdentity>().hasAuthority)
+        //    {
+        //        authority = GameManager_Net.Getplayer(instance.Key);
+        //    }
+        //}
 
 
-        // Spawn the shell on the clients
-        NetworkServer.SpawnWithClientAuthority(shellInstance, authority);
+        //// Spawn the shell on the clients
+        //NetworkServer.SpawnWithClientAuthority(shellInstance, authority);
 
-       
 
+       // NetworkServer.Spawn(shellInstance);
 
         
         // Change the clip to the firing clip and play it.
@@ -233,7 +232,7 @@ public class TankShooting : NetworkBehaviour
 
         if (GameManager.IsOnline)
         {
-            if (isClient)
+            if (!isServer)
                 CmdFire();
             else
                 RpcFire();

@@ -69,22 +69,20 @@ public class TankHealth : NetworkBehaviour
     [Command]
     public void CmdTakeDamage(string _PlayerID, float amount)
     {
-        TankHealth tankHealth = GameManager_Net.Getplayer(_PlayerID).GetComponent<TankHealth>();
-        tankHealth.TakeDamage(amount);
-        Debug.Log("hit recieved");
+        RpcTakeDamage(_PlayerID, amount);
     }
 
-    //[ClientRpc]
-    //public void RpcClientTakeDamage(string _PlayerID, float amount)
-    //{
-    //    TankHealth tankHealth = GameManager_Net.Getplayer(_PlayerID);
-    //    // Adjust the tank's current health, update the UI based on the new health and check whether or not the tank is dead.
+    [ClientRpc]
+    public void RpcTakeDamage(string _PlayerID, float amount)
+    {
+        TankHealth tankHealth = GameManager_Net.Getplayer(_PlayerID).GetComponent<TankHealth>();
+        // Adjust the tank's current health, update the UI based on the new health and check whether or not the tank is dead.
 
-    //    tankHealth.TakeDamage(amount);
+        tankHealth.TakeDamage(amount);
 
 
-    //    Debug.Log("hit recieved from client side");
-    //}
+        Debug.Log("hit recieved from client side");
+    }
     void OnChangeHealth(float Health)
     {
         m_CurrentHealth = Health;
