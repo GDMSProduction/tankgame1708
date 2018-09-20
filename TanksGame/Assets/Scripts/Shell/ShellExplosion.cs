@@ -61,10 +61,10 @@ public class ShellExplosion : NetworkBehaviour
             {
                 if (!isServer)
                     //remotecolliders[i].GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
-                    targetHealth.CmdTakeDamage(colliders[i].GetComponent<Collider>().name, damage);
+                    targetHealth.CmdTakeDamage(colliders[i].GetComponent<PlayerSetup>().NetID, damage);
                 //remotecolliders[i].gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
                 else
-                    targetHealth.RpcTakeDamage(colliders[i].GetComponent<Collider>().name, damage);
+                    targetHealth.RpcTakeDamage(colliders[i].GetComponent<PlayerSetup>().NetID, damage);
             }
             else
             {
@@ -108,7 +108,7 @@ public class ShellExplosion : NetworkBehaviour
                 targetHealth.CmdTakeDamage(remotecolliders[i].GetComponent<PlayerSetup>().NetID, damage);
                 //remotecolliders[i].gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
                 else
-                targetHealth.RpcTakeDamage(remotecolliders[i].GetComponent<Collider>().name, damage);
+                targetHealth.RpcTakeDamage(remotecolliders[i].GetComponent<PlayerSetup>().NetID, damage);
             }
             else
             {
