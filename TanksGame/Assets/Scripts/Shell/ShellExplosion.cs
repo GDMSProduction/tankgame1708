@@ -101,7 +101,7 @@ public class ShellExplosion : NetworkBehaviour
             if (remotecolliders[i].GetComponent<Collider>().tag == PLAYER_TAG)
             {
                 //remotecolliders[i].GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
-                targetHealth.CmdTakeDamage(remotecolliders[i].GetComponent<Collider>().name, damage);
+                targetHealth.CmdTakeDamage(remotecolliders[i].GetComponent<PlayerSetup>().NetID, damage);
                 //remotecolliders[i].gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
             }
             else

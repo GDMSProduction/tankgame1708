@@ -36,12 +36,6 @@ public class PlayerSetup : NetworkBehaviour
             Disablescript();
             Assignlayer();
         }
-        else
-        {
-            sceneCamera = Camera.main;
-            if (sceneCamera != null)
-                sceneCamera.gameObject.SetActive(false);
-        }
 
     }
 

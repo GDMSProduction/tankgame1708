@@ -14,6 +14,7 @@ public class GameManager_Net : NetworkBehaviour {
     public float m_EndDelay = 3f;
     public static bool drawLeaderboard = false;
     public Text m_MessageText;
+    public CameraControl m_CameraControl;
     
     private int m_RoundNumber;
     private WaitForSeconds m_StartWait;
@@ -21,19 +22,7 @@ public class GameManager_Net : NetworkBehaviour {
     public static Dictionary<string, GameObject> players = new Dictionary<string, GameObject>();
     private string m_RoundWinner;
     private string m_GameWinner;
-
-    /*
-    private void OnPlayerDisconnected(NetworkPlayer player)
-    {
-        foreach (var playerID in players)
-        {
-            if (Getplayer(playerID.Key) == null)
-            {
-                players.Remove(playerID.Key);
-            }
-        }
-    }
-    */
+    
 
     private void Start()
     {
@@ -84,7 +73,7 @@ public class GameManager_Net : NetworkBehaviour {
 
         // As soon as the round starts reset the tanks and make sure they can't move.
         DisableTankControl();
-        
+        SetCameraTargets();
         // Increment the round number and display text showing the players what round it is.
         m_RoundNumber++;
         m_MessageText.text = "ROUND " + m_RoundNumber;
@@ -99,6 +88,7 @@ public class GameManager_Net : NetworkBehaviour {
 
         while (!OneTankLeft())
         {
+            SetCameraTargets();
             yield return null;
         }
     }
@@ -180,11 +170,15 @@ public class GameManager_Net : NetworkBehaviour {
     private void SetCameraTargets()
     {
         Transform[] targets = new Transform[players.Count];
-
-        for (int i = 0; i < targets.Length; i++)
+        
+        int i = 0;
+        foreach (var player in players)
         {
-            //players["Player " + i.ToString()].
+            targets[i] = Getplayer(player.Key).transform;
+            i++;
         }
+
+        m_CameraControl.m_Targets = targets;
     }
 
     public static void RegisterPlayer(string _netid, GameObject tank_Instance)
