@@ -177,14 +177,8 @@ public class TankShooting : NetworkBehaviour
     [Command]
     void CmdFire()
     {
-        RpcFire();
+        //RpcFire();
 
-    }
-
-
-    [ClientRpc]
-    void RpcFire()
-    {
         // Set the fired flag so only Fire is only called once.
         m_Fired = true;
 
@@ -221,6 +215,32 @@ public class TankShooting : NetworkBehaviour
         // Reset the launch force.  This is a precaution in case of missing button events.
         m_CurrentLaunchForce = m_MinLaunchForce;
 
+
+    }
+
+
+    [ClientRpc]
+    void RpcFire()
+    {
+
+        // Set the fired flag so only Fire is only called once.
+        m_Fired = true;
+
+        // Create an instance of the shell and store a reference to it's rigidbody.
+        GameObject shellInstance =
+            Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation);
+
+        shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;
+
+        // NetworkServer.Spawn(shellInstance);
+
+
+        // Change the clip to the firing clip and play it.
+        m_ShootingAudio.clip = m_FireClip;
+        m_ShootingAudio.Play();
+
+        // Reset the launch force.  This is a precaution in case of missing button events.
+        m_CurrentLaunchForce = m_MinLaunchForce;
 
     }
 
