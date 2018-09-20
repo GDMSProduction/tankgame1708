@@ -44,7 +44,7 @@ public class PlayerSetup : NetworkBehaviour
     {
         base.OnStartClient();
 
-        NetID = "Player" + GetComponent<NetworkIdentity>().netId.ToString();
+        NetID = playerName;
         GameObject _player = GameObject.Find("OnlineTank(Clone)");
         GameManager_Net.RegisterPlayer(NetID, _player);
         startPos = gameObject.transform.position;

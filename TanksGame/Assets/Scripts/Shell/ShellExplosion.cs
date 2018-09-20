@@ -59,9 +59,12 @@ public class ShellExplosion : NetworkBehaviour
             //gets playerID and appends damage to them
             if (colliders[i].GetComponent<Collider>().tag == PLAYER_TAG)
             {
-                //TankHealth tankHealth = targetHealth;
-
-                targetHealth.CmdTakeDamage(colliders[i].GetComponent<PlayerSetup>().NetID, damage);
+                if (!isServer)
+                    //remotecolliders[i].GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
+                    targetHealth.CmdTakeDamage(colliders[i].GetComponent<Collider>().name, damage);
+                //remotecolliders[i].gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
+                else
+                    targetHealth.RpcTakeDamage(colliders[i].GetComponent<Collider>().name, damage);
             }
             else
             {
@@ -100,9 +103,12 @@ public class ShellExplosion : NetworkBehaviour
             //gets playerID and appends damage to them
             if (remotecolliders[i].GetComponent<Collider>().tag == PLAYER_TAG)
             {
+                if(!isServer)
                 //remotecolliders[i].GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
                 targetHealth.CmdTakeDamage(remotecolliders[i].GetComponent<PlayerSetup>().NetID, damage);
                 //remotecolliders[i].gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
+                else
+                targetHealth.RpcTakeDamage(remotecolliders[i].GetComponent<Collider>().name, damage);
             }
             else
             {
@@ -110,9 +116,30 @@ public class ShellExplosion : NetworkBehaviour
             }
 
         }
+        if (GameManager.IsOnline)
+        {
+            if (!isServer)
+            {
+                // Unparent the particles from the shell.
+                m_ExplosionParticles.transform.parent = null;
 
-        if(isClient)
-        RpcShellstuff();
+                // Play the particle system.
+                m_ExplosionParticles.Play();
+
+                // Play the explosion sound effect.
+                m_ExplosionAudio.Play();
+
+                // Once the particles have finished, destroy the gameobject they are on.
+#pragma warning disable CS0618 // Type or member is obsolete
+                Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.duration);
+#pragma warning restore CS0618 // Type or member is obsolete
+
+                // Destroy the shell.
+                Destroy(gameObject);
+            }
+            else
+                RpcShellstuff();
+        }
         else
         {
             // Unparent the particles from the shell.
@@ -133,6 +160,14 @@ public class ShellExplosion : NetworkBehaviour
             Destroy(gameObject);
         }
     }
+
+    [Command]
+    void CmdShellstuff()
+    {
+        RpcShellstuff();
+    }
+
+
 
     [ClientRpc]
     void RpcShellstuff()
