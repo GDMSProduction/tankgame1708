@@ -198,22 +198,22 @@ public class TankShooting : NetworkBehaviour
         shellInstance.GetComponent<Rigidbody>().velocity = m_CurrentLaunchForce * m_FireTransform.forward;
 
 
-        //foreach (var instance in GameManager_Net.players)
-        //{
-        //    if (GameManager_Net.Getplayer(instance.Key).GetComponent<NetworkIdentity>().hasAuthority)
-        //    {
-        //        authority = GameManager_Net.Getplayer(instance.Key);
-        //    }
-        //}
+        foreach (var instance in GameManager_Net.players)
+        {
+            if (GameManager_Net.Getplayer(instance.Key).GetComponent<NetworkIdentity>().hasAuthority)
+            {
+                authority = GameManager_Net.Getplayer(instance.Key);
+            }
+        }
 
 
-        //// Spawn the shell on the clients
-        //NetworkServer.SpawnWithClientAuthority(shellInstance, authority);
+        // Spawn the shell on the clients
+        NetworkServer.SpawnWithClientAuthority(shellInstance, authority);
 
 
-       // NetworkServer.Spawn(shellInstance);
+        // NetworkServer.Spawn(shellInstance);
 
-        
+
         // Change the clip to the firing clip and play it.
         m_ShootingAudio.clip = m_FireClip;
         m_ShootingAudio.Play();
